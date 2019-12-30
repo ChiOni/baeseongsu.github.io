@@ -49,7 +49,8 @@ plainwhite:
 # - about.md
 
 # Build settings
-theme: plainwhite
+# theme: plainwhite
+# 주석한 이유는 아직 githubpages에서 해당 theme을 지원하지 않기 때문에 메일링이 계속 와서...
 
 plugins:
   - jekyll-seo-tag
