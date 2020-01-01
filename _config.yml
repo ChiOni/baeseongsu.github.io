@@ -55,3 +55,8 @@ plainwhite:
 plugins:
   - jekyll-seo-tag
 #  - jekyll-feed
+
+
+
+disqus_url: https://seongsubae.github.io
+disqus_id: https-seongsubae-github-io
