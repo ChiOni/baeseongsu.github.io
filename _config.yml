@@ -19,7 +19,7 @@ plainwhite:
   
   # disqus
   disqus_url: https://seongsubae.github.io
-  disqus_id: https-seongsubae-github-io
+  disqus_shortname: https-seongsubae-github-io #disqus_id
 
   # generate social links in footer
   social_links:
