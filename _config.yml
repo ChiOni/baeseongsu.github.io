@@ -23,9 +23,9 @@ plainwhite:
 
   # generate social links in footer
   social_links:
-    twitter: seongsubae
+    #twitter: seongsubae
     github:  seongsubae
-    linkedIn: in/seongsubae
+    #linkedIn: in/seongsubae
     rss: rss
     # dribbble: jekyll
     # facebook: jekyll
