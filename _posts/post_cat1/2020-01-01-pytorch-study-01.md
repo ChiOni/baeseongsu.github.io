@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: --
 title:  "Pytorch Study 01"
 date:   2020-01-01 17:27
 categories: Pytorch
