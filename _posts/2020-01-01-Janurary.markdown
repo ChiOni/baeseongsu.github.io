@@ -4,14 +4,23 @@ title:  "Janurary Schedule"
 date:   2020-01-06 23:40
 categories: Dream
 ---
+2o190107, Tue
 
+- 출퇴근 : 미드 salvation
+- 저녁 8pm-10pm : 딥러닝 스터디
+  - graph pooling
+- 밤 : 이것저것
+  - rejection sampling 공부 및 코드 작성(미완성)
+  - mathjax github 추가
+    - https://mkkim85.github.io/blog-apply-mathjax-to-jekyll-and-github-pages/
 
 20190106, Mon
 
-- 출퇴근시간 : 야나두 2강
+- 출퇴근 : 야나두 2강
   - would / could / might 를 잘 사용해볼 것
   - would나 might는 미드에서 진짜 많이 나오긴 했음
-- 저녁시간 : 야나두 3강
+- 저녁 : 약속
+- 밤 : 야나두 3강
   - Don't let life be should have, could have, would have, didn't.
   - 공부하다가 일침 당해버렸다...
 
