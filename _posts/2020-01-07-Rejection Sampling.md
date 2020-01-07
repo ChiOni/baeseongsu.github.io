@@ -3,6 +3,7 @@ layout: post
 title:  "Rejection Sampling"
 date:   2020-01-07 23:00
 categories: Simulation
+use_math: true
 ---
 
 ## Rejection Sampling

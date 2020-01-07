@@ -62,3 +62,13 @@ plugins:
 
 
 
+
+# Conversion -- 마크다운 엔진 변경
+markdown: kramdown
+highlighter: rouge
+lsi: false
+excerpt_separator: "\n\n"
+incremental: false
+
+
+
