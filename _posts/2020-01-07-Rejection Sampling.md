@@ -5,7 +5,7 @@ date:   2020-01-07 23:00
 categories: Simulation
 use_math: true
 ---
-수치해석과 전산통계 분야에서 기각샘플링은 특정한 분포로부터 샘플링을 하고 싶을 때 사용하는 기본적인 방법입니다. 일반적으로 뽑힌 샘플에 대해 "채택"과 "기각" 둘 중 하나를 수행하기 때문에 "Accept-Reject Algorithm"이라고도 부릅니다. 또한, 이 알고리즘은 exact simulation method로 알려져 있습니다. (문제의 optimal solution을 항상 구해주는 method/algorithm으로 생각하면 될듯 합니다.) The method works for any distribution in {\displaystyle \mathbb {R} ^{m}}\mathbb {R} ^{m} with a density.
+수치해석과 전산통계 분야에서 기각샘플링은 특정한 분포로부터 샘플링을 하고 싶을 때 사용하는 기본적인 방법입니다. 일반적으로 뽑힌 샘플에 대해 "채택"과 "기각" 둘 중 하나를 수행하기 때문에 "Accept-Reject Algorithm"이라고도 부릅니다. 또한, 이 알고리즘은 exact simulation method로 알려져 있습니다. (문제의 optimal solution을 항상 구해주는 method/algorithm으로 생각하면 될듯 합니다.) The method works for any distribution in $$ \mathbb {R} ^{m}}\mathbb {R} ^{m} $$ with a density.
 
 ### Concept
 - 샘플을 쉽게 뽑을 수 있는 **proposal distribution**인 $$q(x)$$를 사용하여 **target distribution**인 $$p(x)$$의 분포를 따르는 샘플을 뽑을 수 있는 방법
@@ -15,7 +15,7 @@ use_math: true
 - 샘플링이 가능한 대상, 제안 분포인 $$q(x)$$를 선택
 - 모든 $$x$$에 대하여 $$ p(x) \leq Mq(x) $$를 만족하는 $$M$$이 존재한다고 가정
 
-  1.  uniform distribution $$ U(0,1) $$와 proposal distribution $$q(x)$$에서 각각 $$u$$, $$x^*$$을 샘플링.
+  1. uniform distribution $$ U(0,1) $$와 proposal distribution $$q(x)$$에서 각각 $$u$$, $$x^*$$을 샘플링.
   2. $$ u \leq \frac{p(x^{*})}{Mq(x^{*})} $$ 일 때, 채택(accept)
   3. 반대의 경우, 기각(reject)하고 다시 1번 과정 수행
 
@@ -44,8 +44,7 @@ use_math: true
 ---
 
 ### Proposition
-
-- $$\Omega$$ 상의 모든 $$x$$에 대하여 $$p(x)/q(x) \leq M$$인 constant $$M$$을 구할 수 있다고 가정하자. 그러면 다음의 'Rejection' 알고리즘은 $$X \sim p$$ 를 반환한다.
+$$\Omega$$ 상의 모든 $$x$$에 대하여 $$p(x)/q(x) \leq M$$인 constant $$M$$을 구할 수 있다고 가정하자. 그러면 다음의 'Rejection' 알고리즘은 $$X \sim p$$ 를 반환한다.
 
 ### Proof
 $$Pr(X=x)=\sum_{n=1}^{\infty} Pr(reject\ n-1\ times,\ draw\ Y=x\ and\ accept\ it)$$
