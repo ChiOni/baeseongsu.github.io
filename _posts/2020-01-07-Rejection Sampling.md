@@ -64,20 +64,20 @@ use_math: true
 - $$\Omega$$ 상의 모든 $$x$$에 대하여 $$p(x)/q(x) \leq M$$인 constant $$M$$을 구할 수 있다고 가정하자. 그러면 다음의 'Rejection' 알고리즘은 $$X \sim p$$ 를 반환한다.
 
 ### Proof
-Pr(X=x)=\sum_{n=1}^{\infty} Pr(reject\ n-1\ times,\ draw\ Y=x\ and\ accept\ it)  
+$$Pr(X=x)=\sum_{n=1}^{\infty} Pr(reject\ n-1\ times,\ draw\ Y=x\ and\ accept\ it)$$  
 
-=\sum_{n=1}^{\infty} Pr(reject\ Y)^{n-1}\ Pr(draw\ Y=x\ and\ accept\ it)  
+$$=\sum_{n=1}^{\infty} Pr(reject\ Y)^{n-1}\ Pr(draw\ Y=x\ and\ accept\ it)$$  
 
-(\because Simulation\ Procedure\ = indepedent\ trial)  
+$$(\because Simulation\ Procedure\ = indepedent\ trial)$$  
 
-1)\ Pr(reject\ Y)=Pr(draw\ Y=x\ and\ accept\ it)  
+$$1)\ Pr(reject\ Y)=Pr(draw\ Y=x\ and\ accept\ it)$$  
 
-=Pr(draw\ Y=x)\ Pr(accept\ Y|Y=x)  
+$$=Pr(draw\ Y=x)\ Pr(accept\ Y|Y=x)$$  
 
-=q(x)\ Pr(U \leq \frac{p(Y)}{Mq(Y)}|Y=x)  
+$$=q(x)\ Pr(U \leq \frac{p(Y)}{Mq(Y)}|Y=x)$$  
 
-=q(x) \times \frac{p(x)}{Mq(x)}  
+$$=q(x) \times \frac{p(x)}{Mq(x)}$$  
 
-=\frac{p(x)}{M}  
+$$=\frac{p(x)}{M}$$  
 
-2)\ Pr(draw\ Y=x\ and\ accept\ it) = Pr(draw\ Y=x)\ Pr(accept\ Y|Y=x)  
+$$2)\ Pr(draw\ Y=x\ and\ accept\ it) = Pr(draw\ Y=x)\ Pr(accept\ Y|Y=x)$$  
