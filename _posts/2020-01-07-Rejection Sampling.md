@@ -68,18 +68,34 @@ $$
 Pr(X=x)=\sum_{n=1}^{\infty} Pr(reject\ n-1\ times,\ draw\ Y=x\ and\ accept\ it)
 $$  
 
-$$=\sum_{n=1}^{\infty} Pr(reject\ Y)^{n-1}\ Pr(draw\ Y=x\ and\ accept\ it)$$  
+$$
+=\sum_{n=1}^{\infty} Pr(reject\ Y)^{n-1}\ Pr(draw\ Y=x\ and\ accept\ it)
+$$  
 
-$$(\because Simulation\ Procedure\ = indepedent\ trial)$$  
+$$
+(\because Simulation\ Procedure\ = indepedent\ trial)
+$$  
 
-① $$Pr(reject\ Y)=Pr(draw\ Y=x\ and\ accept\ it)$$  
+$$
+1)\ Pr(reject\ Y)=Pr(draw\ Y=x\ and\ accept\ it)
+$$  
 
-  $$=Pr(draw\ Y=x)\ Pr(accept\ Y|Y=x)$$  
+$$
+=Pr(draw\ Y=x)\ Pr(accept\ Y|Y=x)
+$$  
   
-  $$=q(x)\ Pr(U \leq \frac{p(Y)}{Mq(Y)}|Y=x)$$  
+$$
+=q(x)\ Pr(U \leq \frac{p(Y)}{Mq(Y)}|Y=x)
+$$  
   
-  $$=q(x) \times \frac{p(x)}{Mq(x)}$$  
+$$
+=q(x) \times \frac{p(x)}{Mq(x)}
+$$  
   
-  $$=\frac{p(x)}{M}$$  
+$$
+=\frac{p(x)}{M}
+$$  
 
-② $$Pr(draw\ Y=x\ and\ accept\ it) = Pr(draw\ Y=x)\ Pr(accept\ Y|Y=x)$$  
+$$
+2)\ Pr(draw\ Y=x\ and\ accept\ it) = Pr(draw\ Y=x)\ Pr(accept\ Y|Y=x)
+$$  
