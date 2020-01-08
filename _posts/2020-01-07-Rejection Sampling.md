@@ -5,7 +5,7 @@ date:   2020-01-07 23:00
 categories: Simulation
 use_math: true
 ---
-수치해석과 전산통계 분야에서 기각샘플링은 특정한 분포로부터 샘플링을 하고 싶을 때 사용하는 기본적인 방법입니다. 일반적으로 뽑힌 샘플에 대해 "채택"과 "기각" 둘 중 하나를 수행하기 때문에 "Accept-Reject Algorithm"이라고도 부릅니다. 또한, 이 알고리즘은 exact simulation method로 알려져 있습니다. (문제의 optimal solution을 항상 구해주는 method/algorithm으로 생각하면 될듯 합니다.) The method works for any distribution in $$ \mathbb {R} ^{m}}\mathbb {R} ^{m} $$ with a density.
+수치해석과 전산통계 분야에서 기각샘플링은 특정한 분포로부터 샘플링을 하고 싶을 때 사용하는 기본적인 방법입니다. 일반적으로 뽑힌 샘플에 대해 "채택"과 "기각" 둘 중 하나를 수행하기 때문에 "Accept-Reject Algorithm"이라고도 부릅니다. 또한, 이 알고리즘은 exact simulation method로 알려져 있습니다. (문제의 optimal solution을 항상 구해주는 method/algorithm으로 생각하면 될듯 합니다.)
 
 ### Concept
 - 샘플을 쉽게 뽑을 수 있는 **proposal distribution**인 $$q(x)$$를 사용하여 **target distribution**인 $$p(x)$$의 분포를 따르는 샘플을 뽑을 수 있는 방법
