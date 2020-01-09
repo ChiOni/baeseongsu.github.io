@@ -4,6 +4,18 @@ title:  "Janurary Schedule"
 date:   2020-01-06 23:40
 categories: Dream
 ---
+
+2o190108, Wed
+
+- 출퇴근 : 잠
+- 저녁 7pm-8.5pm : 랩 세미나 참여
+  - Unsupervised Feature Learning via Non-Parametric Instance Discrimination, 2018 CVPR
+- 밤 : 이것저것
+  - rejection sampling 테스트 코드 작성 완료
+  - 백종원의 골목식당
+
+
+
 2o190107, Tue
 
 - 출퇴근 : 미드 salvation
