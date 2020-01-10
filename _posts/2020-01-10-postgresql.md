@@ -13,3 +13,7 @@ FROM 스키마.v_generate_tbl_ddl
 WHERE tablename = LOWER('테이블명')
 ;
 ```
+
+
+reference
+- https://github.com/awslabs/amazon-redshift-utils/blob/master/src/AdminViews/v_generate_tbl_ddl.sql
