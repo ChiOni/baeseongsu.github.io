@@ -72,3 +72,5 @@ incremental: false
 
 
 
+
+theme: jekyll-theme-minimal
