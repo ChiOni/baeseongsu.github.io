@@ -37,3 +37,67 @@ for (path, dir, files) in os.walk("c:/"):
         if ext == '.py':
             print("%s/%s" % (path, filename))
 ```
+
+
+
+#확장자 추가
+```python
+import glob
+import os.path
+
+files = glob.glob('*')
+for x in files:
+    if not os.path.isdir(x):
+        os.rename(x, x + '.txt')
+```
+
+#확장자 일괄 변경
+```
+#replace file ext.
+
+import glob
+import os.path
+
+files = glob.glob('*.mp3')
+
+for x in files:
+
+    if not os.path.isdir(x):
+
+        print x
+
+        x2 = x.replace('.mp3', '.wav')
+
+        print '==> ' + x2
+
+        os.rename(x, x2)
+```
+ 
+
+
+#파일명 앞부분 바꾸기
+```
+import glob
+
+import os.path
+
+files = glob.glob('*.mp3')
+
+for x in files:
+
+    if not os.path.isdir(x):
+
+        print x
+
+        #print x[0]
+
+        if x.startswith('N') == False:
+
+            print 'not NIV'
+
+            x2 = 'NIV-' + x
+
+            print '==> ' + x2
+
+            os.rename(x, x2)
+```
