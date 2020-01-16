@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: http://baeseongsu.github.io/sitemap.xml
