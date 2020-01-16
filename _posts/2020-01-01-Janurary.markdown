@@ -2,8 +2,16 @@
 layout: post
 title:  "Janurary Schedule"
 date:   2020-01-06 23:40
-categories: Dream
+lastmod : 2020-01-17 00:49
+sitemap :
+  changefreq : daily
+  priority : 1.0
+categories: Private
 ---
+
+20190116
+- 딥러닝스터디 ML.13
+
 
 2o190108, Wed
 
