@@ -1,5 +1,5 @@
 title: be enthuasistic
-author: baeseongsu
+author: WeNeed2GoDeeper
 email: subae94@gmail.com
 description: > # this means to ignore newlines until "show_exerpts:"
   인공지능에 취미를 붙이고 싶은 입사 1년차...
@@ -10,7 +10,7 @@ show_excerpts: true # set to true to show excerpts on the homepage
 sass:
   sass_dir: _sass
 plainwhite:
-  name: WeNeed2GoDeeper
+  name: Bae Seongsu
   tagline: be enthuasistic
   date_format: "%b %-d, %Y"
   sitemap: true # set to true to generate sitemap.xml content
