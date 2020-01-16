@@ -70,7 +70,7 @@ lsi: false
 excerpt_separator: "\n\n"
 incremental: false
 
-
+url: https://baeseongsu.github.io
 
 
 theme: jekyll-theme-minimal
