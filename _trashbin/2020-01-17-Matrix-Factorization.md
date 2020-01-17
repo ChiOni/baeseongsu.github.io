@@ -29,4 +29,4 @@ class MatrixFactorization(torch.nn.Module):
 ```
 - 여기서 n_users, n_items, n_factors는 각각 유저, 아이템, 분해요소(?)에 대한 갯를 의미
 - torch.nn.Embedding() : 함수에 대한 이해가 필요해서 api를 찾아본 결과
-	- 
+  - ㅇㅇ
