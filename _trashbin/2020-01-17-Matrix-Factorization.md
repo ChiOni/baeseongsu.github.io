@@ -1,3 +1,5 @@
+
+
 http://www.cs.cmu.edu/~wcohen/10-601/pca+mf.pdf
 
 https://www.cs.cmu.edu/~mgormley/courses/10601-s17/slides/lecture25-mf.pdf
@@ -49,7 +51,8 @@ class MatrixFactorization(torch.nn.Module):
                  [ 0.9124, -2.3616,  1.1151]]])
     ```
     - nn.Embedding(10, 3)
-      - CLASStorch.nn.Embedding(num_embeddings, embedding_dim, padding_idx=None, max_norm=None, norm_type=2.0, scale_grad_by_freq=False, sparse=False, _weight=None)
+	```python CLASS torch.nn.Embedding(num_embeddings, embedding_dim, padding_idx=None, max_norm=None, norm_type=2.0, scale_grad_by_freq=False, sparse=False, _weight=None)
+	```
       - num_embeddings=10, embedding_dim=3
       - num_embeddings = total number of unique elements in the vocabulary
       - embedding_dim = the size of each embedded vector once passed through the embedding layer
