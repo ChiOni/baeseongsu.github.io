@@ -30,7 +30,7 @@ class MatrixFactorization(torch.nn.Module):
 - 여기서 n_users, n_items, n_factors는 각각 유저, 아이템, 분해요소(?)에 대한 갯를 의미
 - torch.nn.Embedding() : 함수에 대한 이해가 필요해서 api를 찾아본 결과, 예시코드를 확인할 수 있었고
   - https://pytorch.org/docs/stable/_modules/torch/nn/modules/sparse.html#Embedding
-  - 실행시킨 결과는 다음과 같다
+  - 실행시킨 결과는 다음과 같다.
   
   ```python
        >>> # an Embedding module containing 10 tensors of size 3
@@ -48,4 +48,10 @@ class MatrixFactorization(torch.nn.Module):
                  [-0.6431,  0.0748,  0.6969],
                  [ 0.9124, -2.3616,  1.1151]]])
     ```
-	
+    - nn.Embedding(10, 3)에서 num_embeddings=10이라는 뜻은? 
+    - To summarize num_embeddings is total number of unique elements in the vocabulary, and embedding_dim is the size of each embedded vector once passed through the embedding layer. Therefore, you can have a tensor of 10+ elements, as long as each element in the tensor is in the range [0, 9], because you defined a vocabulary size of 10 elements.
+    
+    - 먼저, Embedding.weight initilization : – the learnable weights of the module of shape (num_embeddings, embedding_dim) initialized from \mathcal{N}(0, 1)N(0,1)
+    
+    
+    
