@@ -48,10 +48,15 @@ class MatrixFactorization(torch.nn.Module):
                  [-0.6431,  0.0748,  0.6969],
                  [ 0.9124, -2.3616,  1.1151]]])
     ```
-    - nn.Embedding(10, 3)에서 num_embeddings=10이라는 뜻은? 
-    - To summarize num_embeddings is total number of unique elements in the vocabulary, and embedding_dim is the size of each embedded vector once passed through the embedding layer. Therefore, you can have a tensor of 10+ elements, as long as each element in the tensor is in the range [0, 9], because you defined a vocabulary size of 10 elements.
-    
-    - 먼저, Embedding.weight initilization : – the learnable weights of the module of shape (num_embeddings, embedding_dim) initialized from \mathcal{N}(0, 1)N(0,1)
+    - nn.Embedding(10, 3)
+      - CLASStorch.nn.Embedding(num_embeddings, embedding_dim, padding_idx=None, max_norm=None, norm_type=2.0, scale_grad_by_freq=False, sparse=False, _weight=None)
+      - num_embeddings=10, embedding_dim=3
+      - num_embeddings = total number of unique elements in the vocabulary
+      - embedding_dim = the size of each embedded vector once passed through the embedding layer
+      - ex) We can have a tensor of 10+ elements, as long as each element in the tensor is in the range [0, 9], because we defined a vocabulary size of 10 elements.
+    - 그러면, Embedding.weights는 어떻게 initialization 되는가?
+       - initialized from \mathcal{N}(0, 1)N(0,1)
+       - 
     
     
     
