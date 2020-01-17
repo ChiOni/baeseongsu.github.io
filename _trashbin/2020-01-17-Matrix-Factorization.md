@@ -50,19 +50,19 @@ class MatrixFactorization(torch.nn.Module):
                  [ 0.4362, -0.4004,  0.9400],
                  [-0.6431,  0.0748,  0.6969],
                  [ 0.9124, -2.3616,  1.1151]]])
-    ```
+  ```
   - nn.Embedding(10, 3)
     - CLASS torch.nn.Embedding(num_embeddings, embedding_dim, padding_idx=None, max_norm=None, norm_type=2.0, scale_grad_by_freq=False, sparse=False, _weight=None) : API 정의된 파라미터
     - num_embeddings=10, embedding_dim=3
     - num_embeddings = total number of unique elements in the vocabulary
     - embedding_dim = the size of each embedded vector once passed through the embedding layer
     - ex) We can have a tensor of 10+ elements, as long as each element in the tensor is in the range [0, 9], because we defined a vocabulary size of 10 elements.
-      
+    
   - 그러면, Embedding.weights는 어떻게 initialization 되는가?
      - initialized from $$\mathcal{N}(0, 1)N(0,1)$$
      - torch.nn.init.kaiming_normal_ 에 의해 초기화
      - gradient가 흐르게 하거나 안하게 할 수 있음 (https://discuss.pytorch.org/t/requires-grad-false-in-nn-embedding/60521)
-       
+     
   - embedding 결과값 해석
      - embedding하고 싶은 차원을 embedding_dim에 넣어주고, 단어 사전의 unique한 원소 개수를 num_embeddings에 넣어줌
      - embedding module의 row index와 해당 input value와 matching되는 embedding row vector를 가져옴 (just representation)
@@ -71,8 +71,7 @@ class MatrixFactorization(torch.nn.Module):
   - 추가1) sparse=True인 조건에 대해서 제한된 optimizer를 사용할 수 있다고 나오는데, 여기에 해당하는 것은 현재 다음과 같음
     - optim.SGD (CUDA and CPU), optim.SparseAdam (CUDA and CPU) and optim.Adagrad (CPU)
   - 추가2) nn.Embedding.from_pretrained(weight)을 사용하면 Embedding 생성해주는 것
- 
-    
+
 - 즉, 각각의 user와 item을 embedding해서 만든 embedding vector들에 대해, 곱해서주고 sum(1)을 하는 것이 forward pass를 의미
 - user나 item 자체의 information을 통해 학습하는 것이 아니라 user와 item 간의 rating matrix 자체를 잘 mapping하는 user/item embedding vector를 학습하는 것
 
@@ -117,9 +116,49 @@ https://jyoondev.tistory.com/42
 
 
 
-    
-    
-    
+
+
+---
+
+
+
+https://www.youtube.com/watch?v=h8_68OONY-w
+
+으로 macos Xcode build python
+
+
+
+
+
+
+
+---
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ 
+
+​    
 
 
 
