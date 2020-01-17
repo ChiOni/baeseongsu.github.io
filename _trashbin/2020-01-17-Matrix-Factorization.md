@@ -4,7 +4,6 @@ https://www.cs.cmu.edu/~mgormley/courses/10601-s17/slides/lecture25-mf.pdf
 
 https://medium.com/@shoray.goel/kaiming-he-initialization-a8d9ed0b5899 // He Initialization
 
-torch.nn.embedding 함수
 
 
 ```python
@@ -28,3 +27,6 @@ class MatrixFactorization(torch.nn.Module):
     def predict(self, user, item):
         return self.forward(user, item)
 ```
+- 여기서 n_users, n_items, n_factors는 각각 유저, 아이템, 분해요소(?)에 대한 갯를 의미
+- torch.nn.Embedding() : 함수에 대한 이해가 필요해서 api를 찾아본 결과
+	- 
