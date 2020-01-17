@@ -55,7 +55,7 @@ class MatrixFactorization(torch.nn.Module):
       - embedding_dim = the size of each embedded vector once passed through the embedding layer
       - ex) We can have a tensor of 10+ elements, as long as each element in the tensor is in the range [0, 9], because we defined a vocabulary size of 10 elements.
     - 그러면, Embedding.weights는 어떻게 initialization 되는가?
-       - initialized from \mathcal{N}(0, 1)N(0,1)
+       - initialized from $$\mathcal{N}(0, 1)N(0,1)$$
        - 
     
     
