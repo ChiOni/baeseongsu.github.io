@@ -172,7 +172,7 @@ distance-wise distillation loss를 다음과 같이 정의
 
 #### 3.2.2 Angle-wise distillation loss
 
-앞에서 $$\psi_{\text{D}}$$ 를 잘 이해했다면 angle-wise relational potential function 
+앞에서 $\psi_{\text{D}}$ 를 잘 이해했다면 angle-wise relational potential function 
 
 - 세 쌍이 주어진 경우, output representation space에서 세 가지 값이 만든 angle을 measure함
 - <img src="/Users/skcc10170/Library/Application Support/typora-user-images/image-20200127001618420.png" alt="image-20200127001618420" style="zoom:50%;" />
@@ -233,7 +233,6 @@ metric learning은 data examples들을 하나의 매니폴드로 projects하는 
 
 - embedding 모델들은 일반적으로 image retrieval (이미지 검색)에 대해 평가하므로, 다음과 같이 data set을 고르고 validate함
   - CUB-200-2011 [40], Cars 196 [14], Stanford Online Products [21] datasets
-  - Train/test splits [21]에 제시된 방식으로 함
 
 
 
@@ -394,6 +393,20 @@ RKD-DA와 HKD를 함께 사용한 방법이 가장 성능이 좋았습니다. �
 ## 5. Conclusion
 
 We have demonstrated on different tasks and bench- marks that the proposed RKD effectively transfers knowl- edge using mutual relations of data examples. In particular for metric learning, RKD enables smaller students to even outperform their larger teachers. While the distance-wise and angle-wise distillation losses used in this work turn out to be simple yet effective, the RKD framework allows us to explore a variety of task-specific RKD losses with high- order potentials beyond the two instances. We believe that the RKD framework opens a door to a promising area of effective knowledge transfer with high-order relations.
+
+
+
+---
+
+
+
+## 99. 나의 생각
+
+
+
+
+
+
 
 
 
