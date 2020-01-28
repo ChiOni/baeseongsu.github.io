@@ -88,7 +88,7 @@ $$\chi^{N}$$ : a set of $$N$$-tuples of distinct data examples
 
 ### 3.1 Conventional KD
 
-보편적으로 사용해 온 KD는 다음과 같은 objective function을 minmizing한다는 점에서 동일했습니다.
+보편적으로 사용해 온 KD는 다음과 같은 목적함수를 최소화한다는 점에서 동일했습니다.
 
 $$\mathcal{L}_{\text{IKD}} = \sum_{x_{i}\in\chi}{l( f_T(x_i), f_S(x_i) )}$$
 
@@ -102,7 +102,7 @@ RKD의 목표는 Teacher 모델의 output representation에서 data examples의 
 
 $$\mathcal{L}_{\text{RKD}} = \sum_{(x_{i},.., x_{j})\in\chi^{2}}{l_{\delta}{(\psi{(t_i,..,t_j)}, \psi{(s_i,..,s_j)})}}$$
 
-$$ where t_i =  f_{T}(x_{i}), s_{i} = f_{S}(x_{i}), \psi : \text{relational potential function}$$ 
+$$ \text{where } t_i =  f_{T}(x_{i}), s_{i} = f_{S}(x_{i}), \psi : \text{relational potential function}$$ 
 
 
 
@@ -176,9 +176,11 @@ $$\mathcal{L}_{\text{RKD-A}} = \sum_{(x_i,x_j,x_k)\in\chi^{3}}{l_{\delta}{(\psi_
 
 #### 3.2.3 Training with RKD
 
-학습과정에서 제안된 RKD 손실함수는 단독으로 사용할 수도 있고,  task에 특화된 손실함수와 함께 사용할 수도 있습니다. 따라서 전체적인 목적함수(objective)를 수식으로 표현하면 다음과 같은 형태가 됩니다. 추가적으로 이 논문에서 RKD에서 제안된 증류 손실함수들을 구할 때는, tuple sampling을 미니배치 속 표본에 대해 가능한 모든 조합으로 구성한다고 합니다. $\lambda$ 와 같은 balancing factor는 모델의 하이퍼파라미터로서 작동합니다.
-
 $$\mathcal{L}_{\text{task}} + \lambda_{\text{KD}} \cdot \mathcal{L}_{\text{KD}}$$
+
+<br/>
+
+학습과정에서 제안된 RKD 손실함수는 단독으로 사용할 수도 있고,  task에 특화된 손실함수와 함께 사용할 수도 있습니다. 따라서 전체적인 목적함수(objective)를 수식으로 표현하면 위와 같은 형태가 됩니다. 추가적으로 이 논문에서 RKD에서 제안된 증류 손실함수들을 구할 때는, tuple sampling을 미니배치 속 표본에 대해 가능한 모든 조합으로 구성한다고 합니다. $\lambda$ 와 같은 balancing factor는 모델의 하이퍼파라미터로서 작동합니다.
 
 <br/>
 
@@ -238,7 +240,6 @@ metric learning은 data examples들을 하나의 매니폴드로 projects하는 
 - **Teacher model = triple loss [31]**
   - anchor, positive, negative
   - <img src="/Users/skcc10170/Library/Application Support/typora-user-images/image-20200127005133322.png" alt="image-20200127005133322" style="zoom:50%;" />
-  - margin (m) = 0.2
   - triplets을 뽑을 때, distance-weighted sampling [42]
   - embedding vector들이 unit length를 가질 수 있게끔, final embedding layer에 $$l2$$ normalization 적용
     - l2-normalization을 사용하면, [0, 2]로 embedding points 사이 거리의 범위를 제한시킬 수 있어서, triplet loss의 학습을 안정시킬 수 있다고 알려짐
@@ -247,7 +248,6 @@ metric learning은 data examples들을 하나의 매니폴드로 projects하는 
   - teacher와 student의 final embedding outputs에다가 RKD-D, RKD-A를 적용함
   - 제안된 RKD로스들은 embedding points 사이의 거리의 범위에 영향을 딱히 받지 않기 때문에 marin이나 triplet sampling parameters와 같은 민감한 파라미터들이 필요없다는 장점이 있음
   - RKD의 robustness를 보여주기 위해, RKD에 l2 normalization의 적용 유무를 비교함
-  - RKD-DA에 대해서는 lambda_RKD-D = 1, lambda_RKD-A =2 로 세팅
   - RKD loss들을 사용한 metric learning에서, triplet loss와 같은 task loss를 사용하지 않음
     - 왜냐하면, 모델이 원래의 ground-truth labels없이 순수 teacher model의 가이드에 의해 학습되어야 하므로... (실험에서, task loss를 추가적으로 사용하는 것은 의미가 없었음)
 - Attention, FitNet, DarkRank
@@ -349,12 +349,9 @@ RKD의 비교대상으로 few-shot classification에서 standard benchmarks인 O
 
 - prototypical networks [33]를 이용해 RKD를 평가함
   - prototypical networks = 분류가 새로운 클래스들의 주어진 examples들의 거리기반으로 수행되는, 임베딩 네트워크들을 학습함
-  - data-aug, training procedure을 Snell et al. [33] 에 따름
-  - [39] Vinyals 가 제시한 split 방법을 사용
   - prototypical networks를 4개의 convolutional layers로만 구성된 shallow networks를 구성했기 때문에, 더 작은 network를 student로 사용하기 보다, self-distillation을 사용함 (교사와 제자의 아키텍쳐 동일)
 - teacher/ student network의 final embedding output에 RKD, FitNet, Attention 적용
 - RKD-D, RKD-A를 결합해 사용한 경우, 최종 loss를 2로 나눔
-- lambda_Attention = 10
 - 모든 세팅에 대해, final loss에 prototypical loss를 더함
 
 - few-shot classification에서 흔하게 evaluation protocol에 따름 [33]
