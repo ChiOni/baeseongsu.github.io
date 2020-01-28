@@ -152,7 +152,7 @@ RKD에서 relational potential function은 굉장히 중요함
 
 $\psi_{\text{D}}$ 라는 거리 기반의 포텐셜 함수(distance-wise potential function)를 $\psi_{\text{D}} (t_{i},t_{j}) = \frac{1}{\mu}{\|t_{i}-t_{j}\|}_{2}$ 라고 정의합니다. 즉, 한 쌍을 이루는 두 개의 데이터 샘플이 신경망을 통해 output representation space에 놓여질 때, 그들간의 유클리디안 거리를 계산하는 함수라고 보시면 됩니다. 여기서 $\mu$ 는 거리함수의 normalization factor 입니다. 그렇다면, 이 $\mu$ 는 어떻게 정하는 것이 좋을까요?
 
-논문의 핵심 아이디어가 결국 관계성에 있기 때문에, 다른 쌍들과 비교하여 상대적 거리를 계산하는데 초점을 맞추게 됩니다. 따라서 쌍으로 구성된 미니배치인 $\chi^{2}$ 에서 나온 각각의 페어 데이터의 평균 거리로 계산하게 됩니다. 이를 수식으로 나타내면, $\mu = \frac{1}{|\chi^{2}|}{\sum_{(x_{i}, x_{j})\in\chi^{2}}{\|t_{i}-t_{j}\|_{2}}}$ 라고 표현할 수 있습니다.
+논문의 핵심 아이디어가 결국 관계성에 있기 때문에, 다른 쌍들과 비교하여 상대적 거리를 계산하는데 초점을 맞추게 됩니다. 따라서 쌍으로 구성된 미니배치인 $\chi^{2}$ 에서 나온 각각의 페어 데이터의 평균 거리로 계산하게 됩니다. 이를 수식으로 나타내면, $\mu = \frac{1}{|\chi^{2}|}{\sum_{(x_{i}, x_{j})\in\chi^{2}}{\|t_i-t_j\|_2}}$ 라고 표현할 수 있습니다.
 
 만약 $\mu$ 와 같은 factor가 존재하지 않는다면, Teacher 모델의 dimension 일반적으로 더 크기 때문에 Teacher 모델과 Student 모델 사이의 거리 scale 차이가 발생하게 됩니다. 따라서 논문에서는 $\mu$ 를 사용하여 $\psi_{\text{D}}$ 라는 포텐셜 함수가 결국 distance-wise potentials를 잘 반영할 수 있도록 합니다. 실제로 $\mu$ 라는 factor로 인해 학습이 더 안정적이고 빠르게 수렴하는 것을 관찰했다고 합니다.
 
@@ -164,7 +164,7 @@ $$\mathcal{L}_{\text{RKD-D}} = \sum_{(x_{i}, x_{j})\in\chi^{2}}{l_{\delta}{(\psi
 
 결국 이 손실함수는 모델의 output representation spaces 내 상대적 거리를 비슷하게 만들도록 해서, 쌍으로 이루어진 데이터가 있을 때 그들의 관계(relationships)들을 Student 모델로 전달(transfer)하는 역할을 하게 됩니다. Student의 output이 직접적으로 Teacher 모델의 output 값을 맞추도록 강요하는 것이 아니라, output이 놓여지는 공간의 거리구조에 초점을 맞추도록 한다는 것이 기존 KD와의 차이점이라고 할 수 있습니다.
 
-
+</br>
 
 #### 3.2.2 Angle-wise distillation loss
 
@@ -180,7 +180,7 @@ $$\mathcal{L}_{\text{RKD-A}} = \sum_{(x_i,x_j,x_k)\in\chi^{3}}{l_{\delta}{(\psi_
 
 기존의 distance-wise 보다 angle-wise가 더 higher-order property이기 때문에, 학습 과정에서 관계형 정보를 Student 모델에게 더욱 효과적이고 유연하게 전달할 수 있습니다. 실제 실험에서, angle-wise loss가 종종 더 빠르고 수렴하고, 좋은 성능을 보이는 것을 관찰했다고 합니다.
 
-
+</br>
 
 #### 3.2.3 Training with RKD
 
@@ -188,17 +188,15 @@ $$\mathcal{L}_{\text{RKD-A}} = \sum_{(x_i,x_j,x_k)\in\chi^{3}}{l_{\delta}{(\psi_
 
 $$\mathcal{L}_{\text{task}} + \lambda_{\text{KD}} \cdot \mathcal{L}_{\text{KD}}$$
 
-
+</br>
 
 #### 3.2.4 Distillation target layer
 
-RKD에서 distillation target function $$f$$ 는 이론상으로 아무 레이어의 output mapping으로 생각할 수 있다. 하지만, distance/angle-wise losses는 teacher의 개별적인 outputs를 transfer하지 않기 때문에, 개별 output 값들 자체가 중요한 곳에 혼자 사용하는 것은 적절치 않다. Ex) softmax layer for classification
+RKD에서 distillation target function $f$ 는 이론적으로 어떤 레이어의 output mapping을 쓰든 상관이 없습니다. 하지만, distance/angle-wise losses는 Teacher 모델의 개별적인 출력값에 대한 지식을 전달해주지 않기 때문에 개별 output값들 자체가 중요한 곳에 혼자 덜렁 사용하는 것은 적절치 않습니다. 그런 경우에는 IKD 손실함수나 task-specific 손실함수를 사용하는 것이 필요합니다. 그 밖에 대부분의 다른 경우는 RKD가 적용가능하고 효과적인 성능을 보인다고 합니다.
 
-그런 경우에는, IKD 로스나 task-sepcific 로스를 함께 사용하는 것이 필요
+</br>
 
-그 밖에 대부분의 다른 경우는 RKD가 적용가능하고 효과적이었음
-
-
+</br>
 
 ## 4. Experiments
 
@@ -335,49 +333,54 @@ RKD-DA는 student models를 trainig하는데 사용함
 - teacher(Triplet)의 recall@1값은 초기 모델의 pretrained feature와 비슷하게 유지된 반면에, student(RKD)는 different domains에 대해 낮은 recall@1 값을 보임
 - RKD는 다른 도메인들에 대해 일반화를 가지는 능력을 희생해, 학습 도메인에만 모델을 강력하게 adapts하는 것을 알 수 있음
 
-
+</br>
 
 ### 4.2 Image classification
 
-<img src="/Users/skcc10170/Library/Application Support/typora-user-images/image-20200127174449521.png" alt="image-20200127174449521" style="zoom:50%;" />
+- > 
+  >
+  > Image Classification 결과 표
+  >
+  > 
 
 사용한 데이터셋은 CIFAR-100과 Tiny ImageNet이고, RKD와 비교 대상으로 IKD, HKD, FitNet, Attention을 사용했습니다. 모두 cross-entropy loss가 포함되어 있고, ResNet과 VGG를 기반으로 하여 Teacher/Student 모델을 구성했습니다.
 
-RKD-DA와 HKD를 함께 사용한 방법이 가장 성능이 좋았습니다. 대부분의 경우 RKD-DA를 붙였을 때 성능이 향상되는 것을 보면, RKD는 다른 방법을 보완하는 역할을 수행한다고도 볼 수 있겠습니다.
+표에서 볼 수 있듯이, RKD-DA와 HKD를 함께 사용한 방법이 가장 성능이 좋습니다. 또한, RKD-DA와 결합했을 때 대부분의 경우 성능이 향상됩니다.
 
-
+</br>
 
 ### 4.3 Few-shot learning
 
 - Few-shot learning의 목표 = to learn a classifier that generalizes to new unseen classes with only a few examples for each new class
-
 - 실험세팅
-  - 실험에 standar benchmarks for few-shot classification 이용
-    - Omniglot [16], miniImageNet [39]
-  - prototypical networks [33]를 이용해 RKD를 평가함
-    - prototypical networks = 분류가 새로운 클래스들의 주어진 examples들의 거리기반으로 수행되는, 임베딩 네트워크들을 학습함
-    - data-aug, training procedure을 Snell et al. [33] 에 따름
-    - [39] Vinyals 가 제시한 split 방법을 사용
-    - prototypical networks를 4개의 convolutional layers로만 구성된 shallow networks를 구성했기 때문에, 더 작은 network를 student로 사용하기 보다, self-distillation을 사용함 (교사와 제자의 아키텍쳐 동일)
-  - teacher/ student network의 final embedding output에 RKD, FitNet, Attention 적용
-  - RKD-D, RKD-A를 결합해 사용한 경우, 최종 loss를 2로 나눔
-  - lambda_Attention = 10
-  - 모든 세팅에 대해, final loss에 prototypical loss를 더함
+
+RKD의 비교대상으로 few-shot classification에서 standard benchmarks인 Omniglot, miniImageNet을 사용했습니다.
+
+
+
+- prototypical networks [33]를 이용해 RKD를 평가함
+  - prototypical networks = 분류가 새로운 클래스들의 주어진 examples들의 거리기반으로 수행되는, 임베딩 네트워크들을 학습함
+  - data-aug, training procedure을 Snell et al. [33] 에 따름
+  - [39] Vinyals 가 제시한 split 방법을 사용
+  - prototypical networks를 4개의 convolutional layers로만 구성된 shallow networks를 구성했기 때문에, 더 작은 network를 student로 사용하기 보다, self-distillation을 사용함 (교사와 제자의 아키텍쳐 동일)
+- teacher/ student network의 final embedding output에 RKD, FitNet, Attention 적용
+- RKD-D, RKD-A를 결합해 사용한 경우, 최종 loss를 2로 나눔
+- lambda_Attention = 10
+- 모든 세팅에 대해, final loss에 prototypical loss를 더함
 
 - few-shot classification에서 흔하게 evaluation protocol에 따름 [33]
 
   - Omniglot - 1000개의 랜덤 생성한 에피소드들에 대해 평균치를 내서 정확도 계산
   - MiniImagenet - 600개 랜덤 생성한 에피소드들에 대해 평균치로 정확도 계산
-
 - 결과
-
 - <img src="/Users/skcc10170/Library/Application Support/typora-user-images/image-20200127180256095.png" alt="image-20200127180256095" style="zoom:50%;" />
-
 - The Omniglot results are summarized in Ta- ble 5 while the *mini*ImageNet results are reported with 95% confidence intervals in Table 6.
-
 - 결국 우리 방법이 teacher를 뛰어 넘는 student 성능을 지속적으로 보여줌
 
-  
+
+</br>
+
+</br>
 
 ## 5. Conclusion
 
