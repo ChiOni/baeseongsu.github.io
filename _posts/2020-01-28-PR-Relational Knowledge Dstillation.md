@@ -16,11 +16,11 @@ use_math: true
 
 <br/>
 
-
+---
 
 <br/>
 
-# Relational Knowledge Distillation, CVPR 2019
+# <center> Relational Knowledge Distillation, CVPR 2019 </center>
 
 ## 1. Introduction
 
