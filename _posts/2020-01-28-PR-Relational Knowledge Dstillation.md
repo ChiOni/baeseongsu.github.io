@@ -29,6 +29,10 @@ use_math: true
   - penalize structural differences in relations
 - achieve SOTA
 
+<br/>
+
+<br/>
+
 ## 1. Introduction
 
 최근 Computer Vision
@@ -61,61 +65,47 @@ use_math: true
   - metric learning, image classification, few-shot learning 에서 이 연구가 student models의 성능을 상당히 향상시킴
   - 결국, 이 실험들을 통해 knowledge가 relation 속에 살고 있고, RKD는 knowledge를 전파하는데 있어 효과적인 방법임
 
+<br/>
 
+<br/>
 
 ## 2. Related Work
 
-한 모델의 지식(Knowledge)을 다른 모델로 전달(Transfer)하는 연구는 꽤 오랫동안 연구되었다고 합니다. 처음으로, Breiman and Shang이 트리 기반의 model compression을 통해 지식을 전달하는 방법을 제안했다고 합니다. 그 이후로, 신경망으로 model compression이 넘어왔고, Hinton 교수님이 soft targets라는 컨셉을 이용하여 지식 증류(Knowledge Distillation)라는 네이밍을 탄생시켰습니다. 최근에는 HKD(Hinton's KD)를 이은 후속 연구들뿐만 아니라 기존 접근과 다른 방식의 연구가 진행되고 있으며, 지도학습을 넘어 준지도학습/비지도학습 영역에서의 KD, 테스크에 특화된 KD 등에 대한 연구가 진행되고 있습니다.
+한 모델의 지식(Knowledge)을 다른 모델로 전달(Transfer)하는 연구는 꽤 오랫동안 해왔습니다. 처음으로, Breiman and Shang이 트리 기반의 model compression을 통해 지식을 전달하는 방법을 제안했다고 합니다. 그 이후로, 신경망 분야의 model compression이 등장했고, Hinton 교수님이 soft targets라는 컨셉을 이용하여 지식 증류(Knowledge Distillation)라는 네이밍을 탄생시켰습니다. 최근에는 HKD(Hinton's KD)를 이은 후속 연구들뿐만 아니라 기존 접근과 다른 방식의 연구가 진행되고 있으며, 지도학습을 넘어 준지도학습/비지도학습 영역에서의 KD, 태스크에 특화된 KD 등에 대한 연구가 진행되고 있습니다.
 
 다양한 KD 연구흐름 속에서 Chen의 연구가 rank loss를 사용해 similarities를 transfer하는 metric learning 기반의 KD라는 점에서 본인들의 연구와 어느정도 유사성이 있다고 말합니다. 그러나, Chen의 연구는 metric learning에만 제한되어 있고, 본 연구는 다양한 테스크에 적용가능한 general framework라고 말합니다. 게다가, metric learning task에서 Chen 것보다 성능이 더 좋았다고 합니다.
 
+<br/>
+
+<br/>
+
 ## 3. Our Approach
 
-먼저, conventional KD 보고, RKD의 general form에 대해 소개함
+먼저, 보편적으로 사용해 온 지식증류(Knowledge Distillation)와 관계형지식증류(RKD, Relational Knowledge Distillation)에 대한 핵심 개념에 대해 살펴볼 것입니다. 또한 RKD에서 사용되는 손실함수로서, 간단하면서도 효과적인 두 가지 증류 손실함수(distillation losses)에 대해 소개하는 순서로 글을 작성했습니다.
 
-간단하지만 효과적인 두 가지 distillation losses를 소개함
+### 3.0 Notation
 
-Notation
+$$T, S$$
 
-- $$T, S$$
-- $$f_{T}, f_{S}$$
-- $$\chi^{N}$$ : a set of $$N$$-tuples of distinct data examples
-  - ex) $$\chi^{2} = \{ (x_i, x_j) | i \neq j \} $$
-    $$\chi^{3} = \{ (x_i, x_j, x_k) | i \neq j \neq k \} $$
+$$f_{T}, f_{S}$$
+
+$$\chi^{N}$$ : a set of $$N$$-tuples of distinct data examples
+- ex) $$\chi^{2} = \{ (x_i, x_j) | i \neq j \} $$
+  $$\chi^{3} = \{ (x_i, x_j, x_k) | i \neq j \neq k \} $$
 
 
 
 ### 3.1 Conventional KD
 
-- [1, 2, 8, 1,, 12, 25, 27, 45, 47] = conventional KD
+보편적으로 사용해 온 KD는 다음과 같은 objective function을 minmizing한다는 점에서 동일했습니다.
 
-  - minmizing the objective function like below
+$$\mathcal{L}_{\text{IKD}} = \sum_{x_{i}\in\chi}{l( f_T(x_i), f_S(x_i) )}$$
 
-    <img src="/Users/skcc10170/Library/Application Support/typora-user-images/image-20200126174402023.png" alt="image-20200126174402023" style="zoom:50%;" />
+한 마디로, Teacher/Student 모델로 나온 각각의 output mapping을 비슷하게 만들도록 학습했던 것입니다. 논문에서는, 이러한 종류의 KD들이 개별적인 Teacher 모델의 출력값을 Student 모델에게 전해준다는 점에서 IKD(Individual Knowledge Distillation)라고 명명할 수 있다고 말합니다.
 
-  - $$l$$  = loss function
-
-  - penalizes the difference between the teacher and the student
-
-  - [11] Hinton et al. 은 pre-softmax outputs에 대해 temperature $$\tau$$를 적용한 뒤 softmax를 먹인 후 Kullback-Leibler divergence for $$l$$
-
-    - <img src="/Users/skcc10170/Library/Application Support/typora-user-images/image-20200126174627447.png" alt="image-20200126174627447" style="zoom:50%;" />
-
-  - [27] Romero et al. 은 은닉층의 아웃풋들을 $$f_T$$ 와 $$f_S$$로 설정하고 hidden activations의 지식을 propagates함, 그리고 loss function은 squared Euclidean distance임. 일반적으로 $$S$$와 $$T$$의 은닉층 출력의 차원이 다르기 때문에, student network에 $$\beta$$ 매핑을 통해 서로 다른 차원을 bridge해주는 역할을 수행함
-
-    - <img src="/Users/skcc10170/Library/Application Support/typora-user-images/image-20200126175131540.png" alt="image-20200126175131540" style="zoom:50%;" />
-
-- [1, 2, 8, 12, 25, 45, 47]과 같은 많은 방법들은 앞에서 본 (1)식과 같이, teacher network와 student network의 mapping 값의 loss를 줄여나가는 방식으로 볼 수 있음
-
-- 본질적으로, conventional KD는 individual한 teacher의 outputs을 student에게 전달해줌
-
-- 이러한 종류의 KD methods를 Individual KD (IKD)라고 명명함
-
-
+<br/>
 
 ### 3.2 Relational KD
-
-
 
 RKD는 teacher's output presentation에서 data examples의 mutual relations를 이용해 구조적 knowledge를 전달하는 것을 목표로 함
 
@@ -164,7 +154,7 @@ $$\mathcal{L}_{\text{RKD-D}} = \sum_{(x_{i}, x_{j})\in\chi^{2}}{l_{\delta}{(\psi
 
 결국 이 손실함수는 모델의 output representation spaces 내 상대적 거리를 비슷하게 만들도록 해서, 쌍으로 이루어진 데이터가 있을 때 그들의 관계(relationships)들을 Student 모델로 전달(transfer)하는 역할을 하게 됩니다. Student의 output이 직접적으로 Teacher 모델의 output 값을 맞추도록 강요하는 것이 아니라, output이 놓여지는 공간의 거리구조에 초점을 맞추도록 한다는 것이 기존 KD와의 차이점이라고 할 수 있습니다.
 
-</br>
+<br/>
 
 #### 3.2.2 Angle-wise distillation loss
 
@@ -180,7 +170,7 @@ $$\mathcal{L}_{\text{RKD-A}} = \sum_{(x_i,x_j,x_k)\in\chi^{3}}{l_{\delta}{(\psi_
 
 기존의 distance-wise 보다 angle-wise가 더 higher-order property이기 때문에, 학습 과정에서 관계형 정보를 Student 모델에게 더욱 효과적이고 유연하게 전달할 수 있습니다. 실제 실험에서, angle-wise loss가 종종 더 빠르고 수렴하고, 좋은 성능을 보이는 것을 관찰했다고 합니다.
 
-</br>
+<br/>
 
 #### 3.2.3 Training with RKD
 
@@ -188,15 +178,15 @@ $$\mathcal{L}_{\text{RKD-A}} = \sum_{(x_i,x_j,x_k)\in\chi^{3}}{l_{\delta}{(\psi_
 
 $$\mathcal{L}_{\text{task}} + \lambda_{\text{KD}} \cdot \mathcal{L}_{\text{KD}}$$
 
-</br>
+<br/>
 
 #### 3.2.4 Distillation target layer
 
 RKD에서 distillation target function $f$ 는 이론적으로 어떤 레이어의 output mapping을 쓰든 상관이 없습니다. 하지만, distance/angle-wise losses는 Teacher 모델의 개별적인 출력값에 대한 지식을 전달해주지 않기 때문에 개별 output값들 자체가 중요한 곳에 혼자 덜렁 사용하는 것은 적절치 않습니다. 그런 경우에는 IKD 손실함수나 task-specific 손실함수를 사용하는 것이 필요합니다. 그 밖에 대부분의 다른 경우는 RKD가 적용가능하고 효과적인 성능을 보인다고 합니다.
 
-</br>
+<br/>
 
-</br>
+<br/>
 
 ## 4. Experiments
 
@@ -273,7 +263,7 @@ metric learning은 data examples들을 하나의 매니폴드로 projects하는 
 
 - **Cars 196 데이터셋에서는 smaller backbone과 less embedding dimension을 가진 students가 RKD에 의해 teacher model을 뛰어넘는 성능을 보이고 있음**
 
-
+<br/>
 
 #### 4.1.2 Self-distillation
 
@@ -289,7 +279,7 @@ metric learning은 data examples들을 하나의 매니폴드로 projects하는 
 
 - 그러나 2번째 세대부터 성능이 향상되진 않음
 
-  
+<br/>
 
 #### 4.1.3 Comparison with state-of-the art models
 
@@ -304,6 +294,8 @@ RKD-DA는 student models를 trainig하는데 사용함
 - 우리께 항상 좋지 않고, ABE8 [13] 이 CARS와 SOP 데이터셋에 대해 가끔 좋은 이유
   - 우리건 구글넷에서 single embedding layer를 사용하지만,
   - ABE8 [13]은 각 branches마다 추가적인 multiple attention modeuls를 필요로 하기 때문...
+
+<br/>
 
 #### 4.1.4 Discussion
 
@@ -333,7 +325,7 @@ RKD-DA는 student models를 trainig하는데 사용함
 - teacher(Triplet)의 recall@1값은 초기 모델의 pretrained feature와 비슷하게 유지된 반면에, student(RKD)는 different domains에 대해 낮은 recall@1 값을 보임
 - RKD는 다른 도메인들에 대해 일반화를 가지는 능력을 희생해, 학습 도메인에만 모델을 강력하게 adapts하는 것을 알 수 있음
 
-</br>
+<br/>
 
 ### 4.2 Image classification
 
@@ -347,7 +339,7 @@ RKD-DA는 student models를 trainig하는데 사용함
 
 표에서 볼 수 있듯이, RKD-DA와 HKD를 함께 사용한 방법이 가장 성능이 좋습니다. 또한, RKD-DA와 결합했을 때 대부분의 경우 성능이 향상됩니다.
 
-</br>
+<br/>
 
 ### 4.3 Few-shot learning
 
@@ -378,9 +370,9 @@ RKD의 비교대상으로 few-shot classification에서 standard benchmarks인 O
 - 결국 우리 방법이 teacher를 뛰어 넘는 student 성능을 지속적으로 보여줌
 
 
-</br>
+<br/>
 
-</br>
+<br/>
 
 ## 5. Conclusion
 
