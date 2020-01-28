@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: --
 title:  "Rejection Sampling"
 date:   2020-01-07 23:00
 categories: Simulation

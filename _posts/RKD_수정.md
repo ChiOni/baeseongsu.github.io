@@ -1,3 +1,11 @@
+---
+layout: post
+title:  "Paper Review : Relational Knowledge Distillation"
+date:   2020-01-28 22:22
+categories: [DeepLearning, Knowledge Distillation]
+use_math: true
+---
+
 # Relational Knowledge Distillation
 
 CVPR 2019

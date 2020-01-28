@@ -1,5 +1,5 @@
 ---
-layout: post
+layout: --
 title:  "Python 디렉터리 검색하기"
 date:   2020-01-10 14:48
 categories: Python
@@ -72,7 +72,7 @@ for x in files:
 
         os.rename(x, x2)
 ```
- 
+
 
 
 #파일명 앞부분 바꾸기
