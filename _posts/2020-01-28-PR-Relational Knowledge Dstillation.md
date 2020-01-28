@@ -10,33 +10,24 @@ use_math: true
 
 오늘 리뷰할 논문은 CVPR 2019에 Accepted Paper인 ***Relational Knowledge Distillation*** 입니다.
 
-<br/>
-
 최근 딥러닝 스터디를 하며 Knowledge Distillation(KD) 관련 논문 2편을 읽었습니다. NIPS 2014 Deep Learning Workshop에서 발표한 ***Distilling the Knowledge in a Neural Network*** , ICML 2019에 Accepted Paper인 ***Zero-Shot Knowledge Distillation in Deep Networks*** 입니다.
-
-<br/>
 
 극히 주관적인 저의 생각입니다만, 앞선 2편의 KD 논문에 비해 오늘 리뷰할 논문이 좀 더 명확하고 깔끔했습니다. 특히 핵심 아이디어가 뚜렷하고, 뒷받침하는 실험들의 세팅이 탄탄하다는 느낌을 받았습니다. 저자는 POSTECH의 Wonpyo Park, Dongju Kim, Yan Lu, and Minsu Cho 입니다. 재밌게 잘 읽었습니다. 감사합니다.
 
 <br/>
 
-<br/>
 
----
 
 <br/>
 
-<br/>
+# Relational Knowledge Distillation, CVPR 2019
 
 ## 1. Introduction
 
-최근 Computer Vision
+최근 Computer Vision이나 Artificial Intelligence 연구에선 많은 연상량과 메모리를 필요로 하는 모델들이 자주 등장합니다. 이러한 물리적 부담을 줄이기 위한 방법 중 하나로 모델의 지식(knowledge)을 전달(transfer)하는 방법이 있다고 합니다. 이러한 Knowledge Transfer에 있어서, 가장 핵심이 되는 2가지 질문이 있습니다. 바로 "학습된 모델에 들어있는 지식은 무엇으로 구성되어 있는가?"와 "그 지식을 다른 모델로 어떻게 전달할 것인가?"입니다.
 
-- 최근 CV나 AI쪽 연구에서는 많은 연산량과 메모리를 필요로 하는 모델들이 등장
-- 이 물리적 부담을 줄이기 위한 방법 중 하나로 knowledge를 전달하는 방식이 있음
-- 이에 대해, 결국 중요한 두 가지 질문이 존재
-  - (1) What constitutues the knowledge in a learned model?
-  - (2) How to transfer the knowledge into another model?
+
+
 - [3,4,11]과 같은 transfer methods의 assumption
   - knowledge = learned mapping from inputs to outputs
   - transfer = teacher's outputs을 student model의 training targets로 학습시킴
@@ -46,8 +37,11 @@ use_math: true
 - KD를 linguistic structuralism [19] 관점에서 본다면
   - = semiological system 내에서 structural relations에 초점을 맞춰 본다면
   - Saussure’s concept of the relational identity of signs is at the heart of structuralist the- ory; “In a language, as in every other semiological system, what distinguishes a sign is what constitutes it” [30]. In this perspective, the meaning of a sign depends on its relations with other signs within the system; a sign has no absolute meaning independent of the context.
-- 이분들의 work의 central tenet는 knowledge라는 것이 개별적인 학습된 representations보다 학습된 represenations의 관계에 의해 더 잘 표현되어진다.라는 것임
-  - individual data exmaple : an image
+- 
+
+결국 이 논문의 핵심 컨셉은 "지식이라는 것은 (학습된 상황일 때) 개별적인 representation보다 representations의 관계에 의해 더 잘 표현된다"라는 것이다. 
+
+- - individual data exmaple : an image
   - 다른 data examples와 비슷하거나 대조적인 representation이라는 의미를 얻을 수 있음
   - 그러한 주요 정보들은 data embedding space안에서 structure로 놓여질 수 있음
   - 그렇기 때문에, KD에 대해 RKD라는 novel approach를 제안함
