@@ -12,11 +12,10 @@ use_math: true
 
 최근 딥러닝 스터디를 하며 Knowledge Distillation(KD) 관련 논문 2편을 읽었습니다. NIPS 2014 Deep Learning Workshop에서 발표한 ***Distilling the Knowledge in a Neural Network*** , ICML 2019에 Accepted Paper인 ***Zero-Shot Knowledge Distillation in Deep Networks*** 입니다.
 
-극히 주관적인 저의 생각입니다만, 앞선 2편의 KD 논문에 비해 오늘 리뷰할 논문이 좀 더 명확하고 깔끔했습니다. 특히 핵심 아이디어가 뚜렷하고, 뒷받침하는 실험들의 세팅이 탄탄하다는 느낌을 받았습니다.
+극히 주관적인 저의 생각입니다만, 앞선 2편의 KD 논문에 비해 오늘 리뷰할 논문이 좀 더 명확하고 깔끔했습니다.  
+특히 핵심 아이디어가 뚜렷하고, 뒷받침하는 실험들의 세팅이 탄탄하다는 느낌을 받았습니다.
 
 저자는 POSTECH의 Wonpyo Park, Dongju Kim, Yan Lu, and Minsu Cho 입니다. 재밌게 잘 읽었습니다. 감사합니다.
-
-  
 
 ---
 
@@ -153,53 +152,41 @@ RKD에서 relational potential function은 굉장히 중요함
 
 $\psi_{\text{D}}$ 라는 거리 기반의 포텐셜 함수(distance-wise potential function)를 $\psi_{\text{D}} (t_{i},t_{j}) = \frac{1}{\mu}{\|t_{i}-t_{j}\|}_{2}$ 라고 정의합니다. 즉, 한 쌍을 이루는 두 개의 데이터 샘플이 신경망을 통해 output representation space에 놓여질 때, 그들간의 유클리디안 거리를 계산하는 함수라고 보시면 됩니다. 여기서 $\mu$ 는 거리함수의 normalization factor 입니다. 그렇다면, 이 $\mu$ 는 어떻게 정하는 것이 좋을까요?
 
-논문의 핵심 아이디어가 결국 관계성에 있기 때문에, 다른 쌍들과 비교하여 상대적 거리를 계산하는데 초점을 맞추게 됩니다. 따라서 쌍으로 구성된 미니배치인 $\chi^{2}$ 에서 나온 각각의 페어 데이터의 평균 거리로 계산하게 됩니다. 이를 수식으로 나타내면, $\mu = \frac{1}{|\chi^{2}|}{\sum_{(x_{i}, x_{j})\in\chi^{2}}{||t_{i}-t_{j}||_{2}}}$ 라고 표현할 수 있습니다.
+논문의 핵심 아이디어가 결국 관계성에 있기 때문에, 다른 쌍들과 비교하여 상대적 거리를 계산하는데 초점을 맞추게 됩니다. 따라서 쌍으로 구성된 미니배치인 $\chi^{2}$ 에서 나온 각각의 페어 데이터의 평균 거리로 계산하게 됩니다. 이를 수식으로 나타내면, $\mu = \frac{1}{|\chi^{2}|}{\sum_{(x_{i}, x_{j})\in\chi^{2}}{\|t_{i}-t_{j}\|_{2}}}$ 라고 표현할 수 있습니다.
 
-만약 $\mu$ 와 같은 factor가 존재하지 않는다면, Teacher 모델의 dimension이 일반적으로 더 크기 때문에 Teacher 모델과 Student 모델 사이의 거리 scale 차이가 발생하게 됩니다. 따라서 논문에서는 $\mu$ 를 사용하여 $\psi_{\text{D}}$ 라는 포텐셜 함수가 결국 distance-wise potentials를 잘 반영할 수 있도록 합니다. 실제로 $\mu$ 라는 factor로 인해 학습이 더 안정적이고 빠르게 수렴하는 것을 관찰했다고 합니다.
+만약 $\mu$ 와 같은 factor가 존재하지 않는다면, Teacher 모델의 dimension 일반적으로 더 크기 때문에 Teacher 모델과 Student 모델 사이의 거리 scale 차이가 발생하게 됩니다. 따라서 논문에서는 $\mu$ 를 사용하여 $\psi_{\text{D}}$ 라는 포텐셜 함수가 결국 distance-wise potentials를 잘 반영할 수 있도록 합니다. 실제로 $\mu$ 라는 factor로 인해 학습이 더 안정적이고 빠르게 수렴하는 것을 관찰했다고 합니다.
 
-위를 통해 
+앞에서 살펴본 $\psi_{\text{D}}$ 를 사용해 거리기반 증류 손실함수(Distance-wise distillation loss)는 다음과 같이 정의합니다.
 
+$$\mathcal{L}_{\text{RKD-D}} = \sum_{(x_{i}, x_{j})\in\chi^{2}}{l_{\delta}{(\psi_{\text{D}}{(t_i,t_j)}, \psi_{\text{D}}{(s_i,s_j)})}}$$
 
+(여기서 $l_{\delta}$는 Huber loss를 의미, 외부에선 MAE, 이상치 덜 민감 - 내부에선 세밀하게 MSE)
 
-distance-wise distillation loss를 다음과 같이 정의
-
-- <img src="/Users/skcc10170/Library/Application Support/typora-user-images/image-20200127000753806.png" alt="image-20200127000753806" style="zoom:50%;" />
-
-- $$l_{\delta}$$는 Huber loss를 의미함 (외부에선 MAE, 이상치 덜 민감 - 내부에선 세밀하게 MSE)
-  - <img src="/Users/skcc10170/Library/Application Support/typora-user-images/image-20200127000832781.png" alt="image-20200127000832781" style="zoom:50%;" />
-- 결국, output representation spaces 사이의 거리차를 penalizing함으로써 데이터 쌍의 관계를 transfer함
-- 기존 KD와 다르게, teacher output을 직접적으로 student와 매치하게 강요하는 것이 아니라, outputs의 거리 구조에 초점을 두도록 학습시킨다.
+결국 이 손실함수는 모델의 output representation spaces 내 상대적 거리를 비슷하게 만들도록 해서, 쌍으로 이루어진 데이터가 있을 때 그들의 관계(relationships)들을 Student 모델로 전달(transfer)하는 역할을 하게 됩니다. Student의 output이 직접적으로 Teacher 모델의 output 값을 맞추도록 강요하는 것이 아니라, output이 놓여지는 공간의 거리구조에 초점을 맞추도록 한다는 것이 기존 KD와의 차이점이라고 할 수 있습니다.
 
 
 
 #### 3.2.2 Angle-wise distillation loss
 
-앞에서 $\psi_{\text{D}}$ 를 잘 이해했다면 angle-wise relational potential function 
+앞에서 살펴본 $\psi_{\text{D}}$ 가 pair로 작동하는 방식이었다면, 하나의 차원이 더 늘어난 triplet은 어떤 방식으로 작동할까요? 세 쌍이 주어진 경우, output representation space에서 생기는 angle에 대한 metric을 생각해볼 수 있습니다. 따라서, angle-wise potential function $\psi_{\text{A}}$ 는 다음과 같이 정의할 수 있습니다.
 
-- 세 쌍이 주어진 경우, output representation space에서 세 가지 값이 만든 angle을 measure함
-- <img src="/Users/skcc10170/Library/Application Support/typora-user-images/image-20200127001618420.png" alt="image-20200127001618420" style="zoom:50%;" />
+$$ \psi_{\text{A}}{(t_i, t_j, t_k)} = cos \angle{t_{i}t_{j}t_{k}} = \langle \mathbf{e}^{ij}, \mathbf{e}^{kj} \rangle$$ 
 
-angle-wise distillation loss
+$$\text{where } \mathbf{e}^{ij} = \frac{t_i-t_j}{\|t_i-t_j\|_2}, \mathbf{e}^{kj} = \frac{t_k-t_j}{\|t_k-t_j\|_2}.$$ 
 
-- <img src="/Users/skcc10170/Library/Application Support/typora-user-images/image-20200127001654372.png" alt="image-20200127001654372" style="zoom:50%;" />
+동일한 방식으로 각도 기반의 증류 손실함수(Angle-wise distillation loss)를 생각한다면, 다음과 같이 표기할 수 있습니다.
 
-- angular differences를 penalizing해서 training example embeddings의 관계를 transfer함
-- 거리보단 각이 더 higher-order property 이기 때문에, 학습 과정에서 relational information을 student에게 더욱 효과적이고 유연하게 transfer할 수 있음
-- 실험에서, angle-wise loss가 종종 더욱 빠르게 수렴하고, 더 좋은 성능을 보이는 것을 관찰함
+$$\mathcal{L}_{\text{RKD-A}} = \sum_{(x_i,x_j,x_k)\in\chi^{3}}{l_{\delta}{(\psi_{\text{A}}{(t_i,t_j,t_k)}, \psi_{\text{A}}{(s_i,s_j,s_k)})}}$$
+
+기존의 distance-wise 보다 angle-wise가 더 higher-order property이기 때문에, 학습 과정에서 관계형 정보를 Student 모델에게 더욱 효과적이고 유연하게 전달할 수 있습니다. 실제 실험에서, angle-wise loss가 종종 더 빠르고 수렴하고, 좋은 성능을 보이는 것을 관찰했다고 합니다.
 
 
 
 #### 3.2.3 Training with RKD
 
-학습과정에서 제안된 RKD 손실함수는 단독으로 사용할 수도 있고,  task에 특화된 손실함수와 함께 사용할 수도 있습니다. 따라서 전체적인 목적함수(objective)를 수식으로 표현하면 다음과 같은 형태가 됩니다.
+학습과정에서 제안된 RKD 손실함수는 단독으로 사용할 수도 있고,  task에 특화된 손실함수와 함께 사용할 수도 있습니다. 따라서 전체적인 목적함수(objective)를 수식으로 표현하면 다음과 같은 형태가 됩니다. 추가적으로 이 논문에서 RKD에서 제안된 증류 손실함수들을 구할 때는, tuple sampling을 미니배치 속 표본에 대해 가능한 모든 조합으로 구성한다고 합니다. $\lambda$ 와 같은 balancing factor는 모델의 하이퍼파라미터로서 작동합니다.
 
 $$\mathcal{L}_{\text{task}} + \lambda_{\text{KD}} \cdot \mathcal{L}_{\text{KD}}$$
-
-
-
-- $$\lambda_{KD}$$는 loss 항들의 밸런스를 맞추기 위한 tunable hyperparameter임
-- multiple KD losses로 학습될 때, 각 로스는 해당하는 balancing factor로 가중치가 부여됨
-- RKD에서 제안된 distillation loss들을 구할 때, tuple을 뽑는 샘플링은 주어진 미니배치 속 examples에 대해 가능한 모든 조합에 대해 simply 사용
 
 
 
