@@ -149,7 +149,7 @@ RKD에서 relational potential function은 굉장히 중요함
 
 #### 3.2.1 Distance-wise distillation loss
 
-$\psi_{\text{D}}$ 라는 거리 기반의 포텐셜 함수(distance-wise potential function)를 $\psi_{\text{D}}(t_{i}, t_{j}) = \frac{1}{\mu}{||t_{i}-t_{j}||}_{2}$ 라고 정의합니다. 즉, 한 쌍을 이루는 두 개의 데이터 샘플이 신경망을 통해 output representation space에 놓여질 때, 그들간의 유클리디안 거리를 계산하는 함수라고 보시면 됩니다. 여기서 $\mu$ 는 거리함수의 normalization factor 입니다. 그렇다면, 이 $\mu$ 는 어떻게 정하는 것이 좋을까요?
+\psi_{\text{D}} 라는 거리 기반의 포텐셜 함수(distance-wise potential function)를 \psi_{\text{D}} (t_{i},t_{j}) = \frac{1}{\mu}{||t_{i}-t_{j}||\mathunderscore{2}} 라고 정의합니다. 즉, 한 쌍을 이루는 두 개의 데이터 샘플이 신경망을 통해 output representation space에 놓여질 때, 그들간의 유클리디안 거리를 계산하는 함수라고 보시면 됩니다. 여기서 $\mu$ 는 거리함수의 normalization factor 입니다. 그렇다면, 이 $\mu$ 는 어떻게 정하는 것이 좋을까요?
 
 논문의 핵심 아이디어가 결국 관계성에 있기 때문에, 다른 쌍들과 비교하여 상대적 거리를 계산하는데 초점을 맞추게 됩니다. 따라서 쌍으로 구성된 미니배치인 $\chi^{2}$ 에서 나온 각각의 페어 데이터의 평균 거리로 계산하게 됩니다. 이를 수식으로 나타내면, $\mu = \frac{1}{|\chi^{2}|}{\sum_{(x_{i}, x_{j})\in\chi^{2}}{||t_{i}-t_{j}||_{2}}}$ 라고 표현할 수 있습니다.
 
