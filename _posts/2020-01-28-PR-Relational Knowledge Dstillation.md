@@ -7,6 +7,7 @@ use_math: true
 ---
 
 안녕하세요. 배성수입니다.
+
 오늘 리뷰할 논문은 CVPR 2019에 Accepted Paper인 ***Relational Knowledge Distillation*** 입니다.
 
 최근 딥러닝 스터디를 하며 Knowledge Distillation(KD) 관련 논문 2편을 읽었습니다. NIPS 2014 Deep Learning Workshop에서 발표한 ***Distilling the Knowledge in a Neural Network*** , ICML 2019에 Accepted Paper인 ***Zero-Shot Knowledge Distillation in Deep Networks*** 입니다. 극히 주관적인 저의 생각입니다만, 앞선 2편의 KD 논문에 비해 오늘 리뷰할 논문이 좀 더 명확하고 깔끔했습니다. 특히 핵심 아이디어가 뚜렷하고, 뒷받침하는 실험들의 세팅이 탄탄하다는 느낌을 받았습니다.
