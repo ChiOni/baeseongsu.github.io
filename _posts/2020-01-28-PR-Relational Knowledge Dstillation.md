@@ -149,11 +149,11 @@ RKD에서 relational potential function은 굉장히 중요함
 
 #### 3.2.1 Distance-wise distillation loss
 
-$$\psi_{\text{D}}$$ 라는 거리 기반의 포텐셜 함수(distance-wise potential function)를 $$\psi_{\text{D}}(t_{i}, t_{j}) = \frac{1}{\mu}{||t_{i}-t_{j}||}_{2}$$ 라고 정의합니다. 즉, 한 쌍을 이루는 두 개의 데이터 샘플이 신경망을 통해 output representation space에 놓여질 때, 그들간의 유클리디안 거리를 계산하는 함수라고 보시면 됩니다. 여기서 $$\mu$$ 는 거리함수의 normalization factor 입니다. 그렇다면, 이 $$\mu$$ 는 어떻게 정하는 것이 좋을까요?
+$\psi_{\text{D}}$ 라는 거리 기반의 포텐셜 함수(distance-wise potential function)를 $\psi_{\text{D}}(t_{i}, t_{j}) = \frac{1}{\mu}{||t_{i}-t_{j}||}_{2}$ 라고 정의합니다. 즉, 한 쌍을 이루는 두 개의 데이터 샘플이 신경망을 통해 output representation space에 놓여질 때, 그들간의 유클리디안 거리를 계산하는 함수라고 보시면 됩니다. 여기서 $\mu$ 는 거리함수의 normalization factor 입니다. 그렇다면, 이 $\mu$ 는 어떻게 정하는 것이 좋을까요?
 
-논문의 핵심 아이디어가 결국 관계성에 있기 때문에, 다른 쌍들과 비교하여 상대적 거리를 계산하는데 초점을 맞추게 됩니다. 따라서 쌍으로 구성된 미니배치인 $$\chi^{2}$$ 에서 나온 각각의 페어 데이터의 평균 거리로 계산하게 됩니다. 이를 수식으로 나타내면, $$\mu = \frac{1}{|\chi^{2}|}{\sum_{(x_{i}, x_{j})\in\chi^{2}}{||t_{i}-t_{j}||_{2}}}$$ 라고 표현할 수 있습니다.
+논문의 핵심 아이디어가 결국 관계성에 있기 때문에, 다른 쌍들과 비교하여 상대적 거리를 계산하는데 초점을 맞추게 됩니다. 따라서 쌍으로 구성된 미니배치인 $\chi^{2}$ 에서 나온 각각의 페어 데이터의 평균 거리로 계산하게 됩니다. 이를 수식으로 나타내면, $\mu = \frac{1}{|\chi^{2}|}{\sum_{(x_{i}, x_{j})\in\chi^{2}}{||t_{i}-t_{j}||_{2}}}$ 라고 표현할 수 있습니다.
 
-만약 $$\mu$$ 와 같은 factor가 존재하지 않는다면, Teacher 모델의 dimension이 일반적으로 더 크기 때문에 Teacher 모델과 Student 모델 사이의 거리 scale 차이가 발생하게 됩니다. 따라서 논문에서는 $$\mu$$ 를 사용하여 $$\psi_{\text{D}}$$ 라는 포텐셜 함수가 결국 distance-wise potentials를 잘 반영할 수 있도록 합니다. 실제로 $$\mu$$ 라는 factor로 인해 학습이 더 안정적이고 빠르게 수렴하는 것을 관찰했다고 합니다.
+만약 $\mu$ 와 같은 factor가 존재하지 않는다면, Teacher 모델의 dimension이 일반적으로 더 크기 때문에 Teacher 모델과 Student 모델 사이의 거리 scale 차이가 발생하게 됩니다. 따라서 논문에서는 $\mu$ 를 사용하여 $\psi_{\text{D}}$ 라는 포텐셜 함수가 결국 distance-wise potentials를 잘 반영할 수 있도록 합니다. 실제로 $\mu$ 라는 factor로 인해 학습이 더 안정적이고 빠르게 수렴하는 것을 관찰했다고 합니다.
 
 위를 통해 
 
@@ -189,11 +189,11 @@ angle-wise distillation loss
 
 #### 3.2.3 Training with RKD
 
-학습할 때, 제안한 RKD loss들을 포함해서, multiple distillation loss functions는 단독으로 사용할 수도 있고, task-specific loss functions와 함께 사용할 수도 있음 (예를 들면, CE for classification)
+학습과정에서 제안된 RKD 손실함수는 단독으로 사용할 수도 있고,  task에 특화된 손실함수와 함께 사용할 수도 있습니다. 따라서 전체적인 목적함수(objective)를 수식으로 표현하면 다음과 같은 형태가 됩니다.
 
-따라서, overall objective는 다음과 같은 최종 형태가 됨
+$$\mathcal{L}_{\text{task}} + \lambda_{\text{KD}} \cdot \mathcal{L}_{\text{KD}}$$
 
-<img src="/Users/skcc10170/Library/Application Support/typora-user-images/image-20200127002325341.png" alt="image-20200127002325341" style="zoom:50%;" />
+
 
 - $$\lambda_{KD}$$는 loss 항들의 밸런스를 맞추기 위한 tunable hyperparameter임
 - multiple KD losses로 학습될 때, 각 로스는 해당하는 balancing factor로 가중치가 부여됨
