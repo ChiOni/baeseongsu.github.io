@@ -2,13 +2,19 @@
 layout: post
 title:  "Paper Review : Relational Knowledge Distillation"
 date:   2020-01-28 22:22
-categories: [DeepLearning, Knowledge Distillation]
+categories: [Deep Learning, Knowledge Distillation]
 use_math: true
 ---
 
-# Relational Knowledge Distillation
+안녕하세요. 직장인 배성수입니다.
 
-CVPR 2019
+오늘 리뷰할 논문은 CVPR 2019에 Accepted Paper인 ***Relational Knowledge Distillation*** 입니다.
+
+최근 딥러닝 스터디를 하며 Knowledge Distillation(KD) 관련 논문 2편을 읽었습니다. NIPS 2014 Deep Learning Workshop에서 발표한 ***Distilling the Knowledge in a Neural Network*** , ICML 2019에 Accepted Paper인 ***Zero-Shot Knowledge Distillation in Deep Networks*** 입니다. 극히 주관적인 저의 생각입니다만, 앞선 2편의 KD 논문에 비해 오늘 리뷰할 논문이 좀 더 명확하고 깔끔했습니다. 특히 핵심 아이디어가 뚜렷하고, 뒷받침하는 실험들의 세팅이 탄탄하다는 느낌을 받았습니다.
+
+저자는 POSTECH의 Wonpyo Park, Dongju Kim, Yan Lu, and Minsu Cho 입니다. 재밌게 잘 읽었습니다. 감사합니다.
+
+
 
 ---
 
@@ -22,9 +28,9 @@ CVPR 2019
   - penalize structural differences in relations
 - achieve SOTA
 
-
-
 ## 1. Introduction
+
+최근 Computer Vision
 
 - 최근 CV나 AI쪽 연구에서는 많은 연산량과 메모리를 필요로 하는 모델들이 등장
 - 이 물리적 부담을 줄이기 위한 방법 중 하나로 knowledge를 전달하는 방식이 있음
@@ -58,49 +64,9 @@ CVPR 2019
 
 ## 2. Related Work
 
-knowledge를 한 모델에서 다른 모델로 전달하는 연구는 꽤 오랫동안 연구되어 왔음
+한 모델의 지식(Knowledge)을 다른 모델로 전달(Transfer)하는 연구는 꽤 오랫동안 연구되었다고 합니다. 처음으로, Breiman and Shang이 트리 기반의 model compression을 통해 지식을 전달하는 방법을 제안했다고 합니다. 그 이후로, 신경망으로 model compression이 넘어왔고, Hinton 교수님이 soft targets라는 컨셉을 이용하여 지식 증류(Knowledge Distillation)라는 네이밍을 탄생시켰습니다. 최근에는 HKD(Hinton's KD)를 이은 후속 연구들뿐만 아니라 기존 접근과 다른 방식의 연구가 진행되고 있으며, 지도학습을 넘어 준지도학습/비지도학습 영역에서의 KD, 테스크에 특화된 KD 등에 대한 연구가 진행되고 있습니다.
 
-[3] Breiman and Shang이 처음으로 multiple-tree model들의 성능을 approximate하면서 더욱 해석력있게 만들도록 single-tree models를 학습시키는 방법을 제안함
-
-[4] Bucilua et al. [1] Ba and Caruana [11] Hinton et al. - NN에서 비슷한 접근을 하기 시작했음, 주로 model compression의 목적으로 연구함
-
-[4] Bucilua et al. 은 NN의 신경망 모델들의 앙상블을 단일 신경망으로 compress함
-
-[1] Ba and Caruana는 a shallow NN의 정확도를 향상시킴, Deep NN을 따라하도록 훈련시킴으로써, (두 네트워크 사이의 로짓값들의 차이를 penalizing하는 방식으로)
-
-[11] Hinton et al. KD라는 이름을 탄생시키며, student model을 teacher model의 softmax 분포와 matching하는 objective로서
-
-최근에, 이들을 이은 subsequent 후속 paper들이 KD와 다른 접근들을 제안하며 등장함
-
-- [27] Romero et al. 는 relatively narrower students를 학습하기 위해 addtional linear projection layers를 사용함으로써 a teacher model을 distill함
-- [47] Zagoruyko and Komodakis, [12] Huang and Wang은 teacher network의 attention map을 student에게 transfer하는 방식, [36] Tarvainen and Valpola 는 mean weights를 이용해서 비슷한 방식으로 접근
-- [17] Lopes et al. 은 teacher model의 메타데이터를 이용하는 data-free KD를 제안함, 반면에 [29] Sau et al. 은 KD에 noise-based regularizer를 제안함
-- [43] Xu et al. 은 KD의 loss function을 학습하기 위해 conditional adversarial network를 제안함
-- [8] Crowley et al. 는 모델의 convolutional channels들을 그룹핑해서 attention transfer과 함께 모델을 학습시킴으로써 model을 compress함
-- [25] Polino et al. [20] Mishra and Marr 는 KD를 network quantization을 결합했는데, 이는 weights와 activations의 bit precision을 줄이는데 도움을 줌
-
-최근 연구
-
-- [2, 9, 45] 는 teacher model을 동일한 아키텍쳐의 student model로 distilling 함으로써 teacher 보다 student를 향상시키는 것을 보임 (= self-distillation)
-- 특히, [9] Furlanello et al. & [2] Bagherinezhad et al. 는 teacher의 softmax outputs을ground truch over generations로서 사용함으로써 studen를 학습시킴으로써 위를 입증함
-- [45] Yim et al. 은 Gramian matrices를 사용해 output activations를 transfer하고 난뒤 student모델을 fine-tune하는 방식임
-- We also demonstrate that RKD strongly benefits from self-distillation.?
-
-supervised learning을 넘어서서 KD를 연구하고 있음
-
-- [11, 38]의 두가지 프레임워크를 통합시켜 [18] Lopez-Paz et al. 은 unsupervised, semi-supervised, and multi-task learning scenarios로 확장함
-- [26] Radosavovic et al. 은 multiple data transformations를 적용해 하나의 example로부터 multiple predictions를 generate하고 난 뒤, omni-supervised learning을 위해 annotations로서 predictions의 앙상블로서 사용
-
-KD에 대한 연구가 진행됨에 따라, task-specific KD method가 등장함
-
-- [5, 6, 37] object detection
-- [24] face model compression
-- [7] image retrieval and Re-ID
-- 특히, [7] Chen et al. 의 연구는 rank loss를 사용해 images들 간의 similarities를 transfer하는 metric learning 방식의 KD technique을 제안함 - ranks의 relational information을 전달한다는 점에서, 우리 연구와 어느정도 유사성이 있음
-- 그러나, Chen의 연구는 metric learning에만 제한되어 있고, 우리는 RKD라는 일반적인 framework를 제안하며, 다양한 태스크들에 대해 적용가능성을 입증함.
-- 게다가, metric learning에서 우리 실험은 Chen것보다 성능이 outperform with a significant margin 임
-
-
+다양한 KD 연구흐름 속에서 Chen의 연구가 rank loss를 사용해 similarities를 transfer하는 metric learning 기반의 KD라는 점에서 본인들의 연구와 어느정도 유사성이 있다고 말합니다. 그러나, Chen의 연구는 metric learning에만 제한되어 있고, 본 연구는 다양한 테스크에 적용가능한 general framework라고 말합니다. 게다가, metric learning task에서 Chen 것보다 성능이 더 좋았다고 합니다.
 
 ## 3. Our Approach
 
@@ -148,7 +114,9 @@ Notation
 
 ### 3.2 Relational KD
 
- RKD는 teacher's output presentation에서 data examples의 mutual relations를 이용해 구조적 knowledge를 전달하는 것을 목표로 함
+
+
+RKD는 teacher's output presentation에서 data examples의 mutual relations를 이용해 구조적 knowledge를 전달하는 것을 목표로 함
 
 기존 KD와 다르게, RKD는 각각의 n-튜플의 데이터들에 대한 relational potential $$\psi$$ 를 계산하고 그 포텐셜 값을 통해 정보를 teacher에서 student로 전달함
 
@@ -181,16 +149,15 @@ RKD에서 relational potential function은 굉장히 중요함
 
 #### 3.2.1 Distance-wise distillation loss
 
-$$\psi_{D}$$ = distance-wise potential function
+$$\psi_{\text{D}}$$ 라는 거리 기반의 포텐셜 함수(distance-wise potential function)를 $$\psi_{\text{D}}(t_{i}, t_{j}) = \frac{1}{\mu}{||t_{i}-t_{j}||}_{2}$$ 라고 정의합니다. 즉, 한 쌍을 이루는 두 개의 데이터 샘플이 신경망을 통해 output representation space에 놓여질 때, 그들간의 유클리디안 거리를 계산하는 함수라고 보시면 됩니다. 여기서 $$\mu$$ 는 거리함수의 normalization factor 입니다. 그렇다면, 이 $$\mu$$ 는 어떻게 정하는 것이 좋을까요?
 
-- Output representation space에서 두 개의 샘플들의 Euclidean distance를 의미함
-- <img src="/Users/skcc10170/Library/Application Support/typora-user-images/image-20200127000148102.png" alt="image-20200127000148102" style="zoom:50%;" />
-- $$\mu$$는 distance의 normalization factor
-  - 다른 쌍들 사이에서 relative distances에 대해 초점을 맞추고 싶기 때문에, $$\mu$$를 미니배치 안에서 돌아가는 $$\chi^2$$ = 페어셋으로부터 나온 페어들간의 평균 거리로 설정함
-  - <img src="/Users/skcc10170/Library/Application Support/typora-user-images/image-20200127000356493.png" alt="image-20200127000356493" style="zoom:50%;" />
-  - teacher model의 uclidean distance와 student model의 uclidean distance 사이에 크기 차이가 있을을 수 있기 때문에$$\mu$$값을 저렇게 평균값으로 설정함으로써 teacher student 사이의 distance-wise potentials를 matching할 수 있게 댐
-    - scaling 차이가 일어나는 이유로 dimension이 다른 경우...
-  - 실험을 하면서, normalization factor로 학습이 더 안정적이고 빠르게 수렴하는 것을 관찰함
+논문의 핵심 아이디어가 결국 관계성에 있기 때문에, 다른 쌍들과 비교하여 상대적 거리를 계산하는데 초점을 맞추게 됩니다. 따라서 쌍으로 구성된 미니배치인 $$\chi^{2}$$ 에서 나온 각각의 페어 데이터의 평균 거리로 계산하게 됩니다. 이를 수식으로 나타내면, $$\mu = \frac{1}{|\chi^{2}|}{\sum_{(x_{i}, x_{j})\in\chi^{2}}{||t_{i}-t_{j}||_{2}}}$$ 라고 표현할 수 있습니다.
+
+만약 $$\mu$$ 와 같은 factor가 존재하지 않는다면, Teacher 모델의 dimension이 일반적으로 더 크기 때문에 Teacher 모델과 Student 모델 사이의 거리 scale 차이가 발생하게 됩니다. 따라서 논문에서는 $$\mu$$ 를 사용하여 $$\psi_{\text{D}}$$ 라는 포텐셜 함수가 결국 distance-wise potentials를 잘 반영할 수 있도록 합니다. 실제로 $$\mu$$ 라는 factor로 인해 학습이 더 안정적이고 빠르게 수렴하는 것을 관찰했다고 합니다.
+
+위를 통해 
+
+
 
 distance-wise distillation loss를 다음과 같이 정의
 
@@ -205,7 +172,7 @@ distance-wise distillation loss를 다음과 같이 정의
 
 #### 3.2.2 Angle-wise distillation loss
 
-angle-wise relational potential
+앞에서 $$\psi_{\text{D}}$$ 를 잘 이해했다면 angle-wise relational potential function 
 
 - 세 쌍이 주어진 경우, output representation space에서 세 가지 값이 만든 angle을 measure함
 - <img src="/Users/skcc10170/Library/Application Support/typora-user-images/image-20200127001618420.png" alt="image-20200127001618420" style="zoom:50%;" />
@@ -246,29 +213,13 @@ RKD에서 distillation target function $$f$$ 는 이론상으로 아무 레이�
 
 ## 4. Experiments
 
-3가지 태스크를 평가
+metric learning, classification, few-shot learning 이라는 3가지 태스크에 대해 실험을 진행했습니다. 기존의 RKD를 사용한 손실함수에 따라 RKD-D, RKD-A, RKD-DA 로 구분하고, 다른 손실함수와 결합해서 사용할 경우 항상 각 손실함수의 조정계수(balancing factor)를 고려했다고 합니다.
 
-- metric learning, classification, few-shot learning
+각 태스크에 대하여 RKD를 FitNet, Attention, HKD (Hinton's KD), Dark-Rank 등과 비교했고, 하이퍼파라미터의 공정한 비교를 위해 grid search로 최적화했다고 합니다. 
 
-- RKD-D = RKD with the distance-wise loss
-- RKD-A = RKD with the angle-wise loss
-- RKD-DA = RKD with two losses together
-- 학습할 때, 로스들이 다른 로스들과 결합해 있는 경우 각각의 loss항에 각가의 balancing factor들을 붙여줌
+*Dark-Rank = 데이터 사이의 유사도 순위를 transfer하는, metric learning에 적합한 KD 방법 (metric learning task에서만 사용)
 
-RKD를 다른 KD 방법들과 비교함
 
-- [27] FitNet
-  - model은 두가지 단계로 학습
-  - (1) FitNet loss와 함께 모델을 학습
-  - task-specific loss와 함께 모델을 fine-tune함 (at hand?)
-- [47] Attention
-- [11] HKD (Hinton's)
-- ++ metric learning에서는, 추가적으로 [7] Dark-Rank 도 비교 함
-  - Dark-Rank = metric learning을 위해서 디자인된 KD 방법이기 때문에
-
-비교할 때, hyperparameter의 공정한 비교를 위해 grid search를 통해 각각의 방법들 모두를 튜닝함
-
-​	
 
 ### 4.1 Metric learning
 
@@ -321,25 +272,7 @@ metric learning은 data examples들을 하나의 매니폴드로 projects하는 
   - RKD-DA에 대해서는 lambda_RKD-D = 1, lambda_RKD-A =2 로 세팅
   - RKD loss들을 사용한 metric learning에서, triplet loss와 같은 task loss를 사용하지 않음
     - 왜냐하면, 모델이 원래의 ground-truth labels없이 순수 teacher model의 가이드에 의해 학습되어야 하므로... (실험에서, task loss를 추가적으로 사용하는 것은 의미가 없었음)
-- **Attention [47]**
-  - original paper에 따라, Resnet의 2nd/3rd/4th block들의 output에 대해 이 방법 적용
-  - Set $$\lambda_{Triplet}$$ = 1 and $$\lambda_{Attention}$$ = 50
-- **FitNet [27]**
-  - original paper에 따라 2 단계로 학습
-    - 먼저, a model with FitNet loss를 초기화
-    - model을 fine-tune함 (이 연구의 경우 Teacher = Triplet)
-  - ResNet의 2,3,4번째 블록의 아웃푹과 final embedding 에 대해 이 방법 적용
-- **DarkRank [7]**
-  - 데이터 표본들 사이의 유사도 순위를 transfer하는 KD 방법 (metric learning을 위한 KD method)
-  - 이 논문에서 2가지 로스가 제안되었는데, 여기서는 HardRank loss를 사용함
-    - 연산량이 효율적, 성능이 다른거에 비해 좋기 때문
-  - DarkRank loss는 teacher/student 모델의 최종 outputs에 적용함
-  - 학습하는 동안, 논문에서 제시한 triplet loss와 똑같은 objective를 사용함
-  - hyperparameters optimization
-    - alpha = 3, beta = 3, lambda_DarkRank = lambda_Triplet = 1
-    - (GridSearch on alpha 1 to 3, beta 2 to 4)
-    - 원논문보다 얘네 하이퍼파라미터가 더 좋은 결과를 냄
-    - 
+- Attention, FitNet, DarkRank
 
 <img src="/Users/skcc10170/Library/Application Support/typora-user-images/image-20200127164642541.png" alt="image-20200127164642541" style="zoom:50%;" />
 
@@ -414,35 +347,17 @@ RKD-DA는 student models를 trainig하는데 사용함
 - teacher(Triplet)의 recall@1값은 초기 모델의 pretrained feature와 비슷하게 유지된 반면에, student(RKD)는 different domains에 대해 낮은 recall@1 값을 보임
 - RKD는 다른 도메인들에 대해 일반화를 가지는 능력을 희생해, 학습 도메인에만 모델을 강력하게 adapts하는 것을 알 수 있음
 
+
+
 ### 4.2 Image classification
 
-- 실험세팅
-  - RKD 비교 대상 - IKD, HKD, FitNet, [47] Attention
-    - FitNet, Attention은 CNN의 2번째 3번째 4번째 블록들의 아웃풋에 대해 적용
-    - lambda_attention = 50 세팅
-    - HKD는 최종 아웃풋에 적용, 온도 타우는 4, lambda_HKD = 16
-    - RKD-D와 RKD-A는 teacher/student network의 마지막 pooling layer에 적용
-    - lambda_RKD-D = 25, lambda_RKD-A = 50
-    - 모든 세팅의 공통으로, 마지막 로스는 CE loss로 사용
-    - teacher/student모델 모두, 마지막 풀링 레이어 이후의 FC 레이어들을 제거하고, classifier로서의 역할을 수행하는 single FC layer만 달음
-  - CIFAR-100, Tiny ImageNEt 데이터셋
-    - CIFAR-100 = 32, 32 images with 100 object categories
-      - CIFAR-100은 zero-padded 40, 40 images에 대해 랜덤 크롭해 32,32만들고 random horizontal flipping	
-      - momentum 0.9, weight decay 5 * 10^(-4), mini-batch size 128, SGD optimizer
-      - 200 epochs로 훈련시킴
-      - learning rate는 0.1에서 시작해서 60, 120, 160 에폭마다 0.2씩 곱함
-      - ResNet50을 Teacher model, VGG11 w/ batch normalization을 Student model로 채택
-    - Tiny ImageNet = 64 64 with 200 classes
-      - data-aug (random rotation, color jittering, horizontal flipping)
-      - optimizer (SGD, mini-batch 128, momentum 0.9)
-      - 300 epoch train
-      - learning rate 0.1에서 시작해서 60, 120, 160, 200, 250마다 0.2씩 곱함
-      - ResNet101 = teacher / ResNet18 = Student
-  - ![image-20200127174449521](/Users/skcc10170/Library/Application Support/typora-user-images/image-20200127174449521.png)
-  - 결과
-    - RKD-DA와 HKD를 결합한 것이 성능이 가장 좋음
-    - RKD 방법은 다른 KD에 대해 complementary함
-      - 대부분의 경우 RKD를 붙였을 때, 성능이 향상되기 때문
+<img src="/Users/skcc10170/Library/Application Support/typora-user-images/image-20200127174449521.png" alt="image-20200127174449521" style="zoom:50%;" />
+
+사용한 데이터셋은 CIFAR-100과 Tiny ImageNet이고, RKD와 비교 대상으로 IKD, HKD, FitNet, Attention을 사용했습니다. 모두 cross-entropy loss가 포함되어 있고, ResNet과 VGG를 기반으로 하여 Teacher/Student 모델을 구성했습니다.
+
+RKD-DA와 HKD를 함께 사용한 방법이 가장 성능이 좋았습니다. 대부분의 경우 RKD-DA를 붙였을 때 성능이 향상되는 것을 보면, RKD는 다른 방법을 보완하는 역할을 수행한다고도 볼 수 있겠습니다.
+
+
 
 ### 4.3 Few-shot learning
 
