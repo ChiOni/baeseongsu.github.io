@@ -72,7 +72,7 @@ use_math: true
 
 ## 3. Our Approach
 
-먼저, 보편적으로 사용해 온 지식증류(Knowledge Distillation)와 관계형지식증류(RKD, Relational Knowledge Distillation)에 대한 핵심 개념에 대해 살펴볼 것입니다. 또한 RKD에서 사용되는 손실함수로서, 간단하면서도 효과적인 두 가지 증류 손실함수(distillation losses)에 대해 소개하는 순서로 글을 작성했습니다.
+먼저, 보편적으로 사용해 온 지식증류(Knowledge Distillation)를 살펴본 뒤 논문에서 제안한 관계형 지식증류(RKD, Relational Knowledge Distillation)의 핵심 개념에 대해 살펴볼 것입니다. 또한 RKD에서 사용되는 손실함수로서, 간단하면서도 효과적인 두 가지 증류 손실함수(distillation losses)에 대해 소개하는 순서로 글을 작성했습니다.
 
 ### 3.0 Notation
 
@@ -98,15 +98,17 @@ $$\mathcal{L}_{\text{IKD}} = \sum_{x_{i}\in\chi}{l( f_T(x_i), f_S(x_i) )}$$
 
 ### 3.2 Relational KD
 
-RKD는 teacher's output presentation에서 data examples의 mutual relations를 이용해 구조적 knowledge를 전달하는 것을 목표로 함
+RKD의 목표는 Teacher 모델의 output representation에서 data examples의 mutual relations를 이용해 구조적 지식(Structural Knowledge)를 전달하는 것으로 볼 수 있습니다. 따라서 기존 KD가 지식을 전달하는 방식과 달리, RKD는 $n\text{-tuple}$ 형태의 data examples에 대한 relational potential $\psi$ 를 계산하고, 그 포텐셜 값을 통해 지식을 전달합니다. 이를 수식으로 표현하면 다음과 같습니다.
 
-기존 KD와 다르게, RKD는 각각의 n-튜플의 데이터들에 대한 relational potential $$\psi$$ 를 계산하고 그 포텐셜 값을 통해 정보를 teacher에서 student로 전달함
+$$\mathcal{L}_{\text{RKD}} = \sum_{(x_{i},.., x_{j})\in\chi^{2}}{l_{\delta}{(\psi{(t_i,..,t_j)}, \psi{(s_i,..,s_j)})}}$$
 
-- Define $$t_i = f_{T}(x_{i})$$ , $$s_{i} = f_{S}(x_{i})$$
-- RKD objective는 다음과 같이 표현됨
-  - <img src="/Users/skcc10170/Library/Application Support/typora-user-images/image-20200126234145205.png" alt="image-20200126234145205" style="zoom:50%;" />
-  - $$\psi$$ - relational potential function
-    - measures a relational energy of the given n-tuple
+$$ where t_i =  f_{T}(x_{i}), s_{i} = f_{S}(x_{i}), \psi : \text{relational potential function}$$ 
+
+
+
+
+
+- - - measures a relational energy of the given n-tuple
 
 RKD는 relational potential function을 사용해 나온 teacher 모델의 relational structure에 대해 같게 가지도록 student model을 학습시킴
 
