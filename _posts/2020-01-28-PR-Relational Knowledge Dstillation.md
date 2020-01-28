@@ -10,24 +10,19 @@ use_math: true
 
 오늘 리뷰할 논문은 CVPR 2019에 Accepted Paper인 ***Relational Knowledge Distillation*** 입니다.
 
+<br/>
+
 최근 딥러닝 스터디를 하며 Knowledge Distillation(KD) 관련 논문 2편을 읽었습니다. NIPS 2014 Deep Learning Workshop에서 발표한 ***Distilling the Knowledge in a Neural Network*** , ICML 2019에 Accepted Paper인 ***Zero-Shot Knowledge Distillation in Deep Networks*** 입니다.
 
-극히 주관적인 저의 생각입니다만, 앞선 2편의 KD 논문에 비해 오늘 리뷰할 논문이 좀 더 명확하고 깔끔했습니다.  
-특히 핵심 아이디어가 뚜렷하고, 뒷받침하는 실험들의 세팅이 탄탄하다는 느낌을 받았습니다.
+<br/>
 
-저자는 POSTECH의 Wonpyo Park, Dongju Kim, Yan Lu, and Minsu Cho 입니다. 재밌게 잘 읽었습니다. 감사합니다.
+극히 주관적인 저의 생각입니다만, 앞선 2편의 KD 논문에 비해 오늘 리뷰할 논문이 좀 더 명확하고 깔끔했습니다. 특히 핵심 아이디어가 뚜렷하고, 뒷받침하는 실험들의 세팅이 탄탄하다는 느낌을 받았습니다. 저자는 POSTECH의 Wonpyo Park, Dongju Kim, Yan Lu, and Minsu Cho 입니다. 재밌게 잘 읽었습니다. 감사합니다.
+
+<br/>
+
+<br/>
 
 ---
-
-## Abstract
-
-- Conventional KD Approach
-  - as a from of training the student to mimic output activations of **individual data examples** represented by teacher
-- Our Approach (Relational Knowledge Distillation)
-  - transfers **mutual relations of data examples**
-- distance-wise & angle-wise distllation losses를 제안
-  - penalize structural differences in relations
-- achieve SOTA
 
 <br/>
 
@@ -160,11 +155,13 @@ $$\mathcal{L}_{\text{RKD-D}} = \sum_{(x_{i}, x_{j})\in\chi^{2}}{l_{\delta}{(\psi
 
 앞에서 살펴본 $\psi_{\text{D}}$ 가 pair로 작동하는 방식이었다면, 하나의 차원이 더 늘어난 triplet은 어떤 방식으로 작동할까요? 세 쌍이 주어진 경우, output representation space에서 생기는 angle에 대한 metric을 생각해볼 수 있습니다. 따라서, angle-wise potential function $\psi_{\text{A}}$ 는 다음과 같이 정의할 수 있습니다.
 
-```latex
+
 $$ \psi_{\text{A}}{(t_i, t_j, t_k)} = cos \angle{t_{i}t_{j}t_{k}} = \langle \mathbf{e}^{ij}, \mathbf{e}^{kj} \rangle$$ 
 
 $$\text{where } \mathbf{e}^{ij} = \frac{t_i-t_j}{\|t_i-t_j\|_2}, \mathbf{e}^{kj} = \frac{t_k-t_j}{\|t_k-t_j\|_2}.$$ 
-```
+
+<br/>
+
 
 동일한 방식으로 각도 기반의 증류 손실함수(Angle-wise distillation loss)를 생각한다면, 다음과 같이 표기할 수 있습니다.
 
@@ -198,7 +195,7 @@ metric learning, classification, few-shot learning 이라는 3가지 태스크�
 
 *Dark-Rank = 데이터 사이의 유사도 순위를 transfer하는, metric learning에 적합한 KD 방법 (metric learning task에서만 사용)
 
-
+<br/>
 
 ### 4.1 Metric learning
 
@@ -253,6 +250,8 @@ metric learning은 data examples들을 하나의 매니폴드로 projects하는 
 - Attention, FitNet, DarkRank
 
 <img src="/Users/skcc10170/Library/Application Support/typora-user-images/image-20200127164642541.png" alt="image-20200127164642541" style="zoom:50%;" />
+
+<br/>
 
 #### 4.1.1 Distillation to smaller networks
 
