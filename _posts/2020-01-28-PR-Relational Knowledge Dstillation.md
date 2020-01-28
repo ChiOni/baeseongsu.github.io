@@ -22,6 +22,8 @@ use_math: true
 
 # <center> Relational Knowledge Distillation, CVPR 2019 </center>
 
+<br/>
+
 ## 1. Introduction
 
 최근 Computer Vision이나 Artificial Intelligence 연구에선 많은 연상량과 메모리를 필요로 하는 모델들이 자주 등장합니다. 이러한 물리적 부담을 줄이기 위한 방법 중 하나로 모델의 지식(knowledge)을 전달(transfer)하는 방법이 있다고 합니다. 이러한 Knowledge Transfer에 있어서, 가장 핵심이 되는 2가지 질문이 있습니다. 바로 "학습된 모델에 들어있는 지식은 무엇으로 구성되어 있는가?"와 "그 지식을 다른 모델로 어떻게 전달할 것인가?"입니다.
@@ -82,7 +84,7 @@ $$\chi^{N}$$ : a set of $$N$$-tuples of distinct data examples
 - ex) $$\chi^{2} = \{ (x_i, x_j) | i \neq j \} $$
   $$\chi^{3} = \{ (x_i, x_j, x_k) | i \neq j \neq k \} $$
 
-
+<br/>
 
 ### 3.1 Conventional KD
 
@@ -125,7 +127,7 @@ RKD에서 relational potential function은 굉장히 중요함
   - 짝을 찟어 본 것 - distance-wise loss
   - 세 개를 하나의 쌍으로 관계로 생각 - angle-wise loss
 
-
+<br/>
 
 #### 3.2.1 Distance-wise distillation loss
 
@@ -149,6 +151,8 @@ $$\mathcal{L}_{\text{RKD-D}} = \sum_{(x_{i}, x_{j})\in\chi^{2}}{l_{\delta}{(\psi
 
 앞에서 살펴본 $\psi_{\text{D}}$ 가 pair로 작동하는 방식이었다면, 하나의 차원이 더 늘어난 triplet은 어떤 방식으로 작동할까요? 세 쌍이 주어진 경우, output representation space에서 생기는 angle에 대한 metric을 생각해볼 수 있습니다. 따라서, angle-wise potential function $\psi_{\text{A}}$ 는 다음과 같이 정의할 수 있습니다.
 
+<br/>
+
 
 $$ \psi_{\text{A}}{(t_i, t_j, t_k)} = cos \angle{t_{i}t_{j}t_{k}} = \langle \mathbf{e}^{ij}, \mathbf{e}^{kj} \rangle$$ 
 
@@ -156,10 +160,13 @@ $$\text{where } \mathbf{e}^{ij} = \frac{t_i-t_j}{\|t_i-t_j\|_2}, \mathbf{e}^{kj}
 
 <br/>
 
-
 동일한 방식으로 각도 기반의 증류 손실함수(Angle-wise distillation loss)를 생각한다면, 다음과 같이 표기할 수 있습니다.
 
+<br/>
+
 $$\mathcal{L}_{\text{RKD-A}} = \sum_{(x_i,x_j,x_k)\in\chi^{3}}{l_{\delta}{(\psi_{\text{A}}{(t_i,t_j,t_k)}, \psi_{\text{A}}{(s_i,s_j,s_k)})}}$$
+
+<br/>
 
 기존의 distance-wise 보다 angle-wise가 더 higher-order property이기 때문에, 학습 과정에서 관계형 정보를 Student 모델에게 더욱 효과적이고 유연하게 전달할 수 있습니다. 실제 실험에서, angle-wise loss가 종종 더 빠르고 수렴하고, 좋은 성능을 보이는 것을 관찰했다고 합니다.
 
@@ -268,11 +275,8 @@ metric learning은 data examples들을 하나의 매니폴드로 projects하는 
 
 - <img src="/Users/skcc10170/Library/Application Support/typora-user-images/image-20200127170223095.png" alt="image-20200127170223095" style="zoom:50%;" />
 
-- 결과를 보면, 첫 세대의 teacher(triplet)보다도 성능이 더 좋아진 것을 확인 가능함
 
-- 특히, CUB와 Cars는 꽤 큰 차이로 성능이 좋아짐
-
-- 그러나 2번째 세대부터 성능이 향상되진 않음
+표에서 보면, 자가 증류(Self-distillation)를 통해 학습한 여러 세대의 Student 모델들은 초기 세대의 Teacher 모델(Triplet)보다 성능이 더 좋습니다. 그러나 2번째 세대(@Gen2)부터는 성능이 향상되지 않습니다.
 
 <br/>
 
@@ -285,10 +289,6 @@ metric learning의 최근 SOTA 방법들은 GoogLeNet을 백본으로써 차용�
 RKD-DA는 student models를 trainig하는데 사용함
 
 <img src="/Users/skcc10170/Library/Application Support/typora-user-images/image-20200127170817085.png" alt="image-20200127170817085" style="zoom:50%;" />
-
-- 우리께 항상 좋지 않고, ABE8 [13] 이 CARS와 SOP 데이터셋에 대해 가끔 좋은 이유
-  - 우리건 구글넷에서 single embedding layer를 사용하지만,
-  - ABE8 [13]은 각 branches마다 추가적인 multiple attention modeuls를 필요로 하기 때문...
 
 <br/>
 
@@ -324,11 +324,11 @@ RKD-DA는 student models를 trainig하는데 사용함
 
 ### 4.2 Image classification
 
-- > 
-  >
-  > Image Classification 결과 표
-  >
-  > 
+> 
+>
+> Image Classification 결과 표
+>
+> 
 
 사용한 데이터셋은 CIFAR-100과 Tiny ImageNet이고, RKD와 비교 대상으로 IKD, HKD, FitNet, Attention을 사용했습니다. 모두 cross-entropy loss가 포함되어 있고, ResNet과 VGG를 기반으로 하여 Teacher/Student 모델을 구성했습니다.
 
@@ -372,8 +372,9 @@ RKD의 비교대상으로 few-shot classification에서 standard benchmarks인 O
 ## 5. Conclusion
 
 We have demonstrated on different tasks and bench- marks that the proposed RKD effectively transfers knowl- edge using mutual relations of data examples. In particular for metric learning, RKD enables smaller students to even outperform their larger teachers. While the distance-wise and angle-wise distillation losses used in this work turn out to be simple yet effective, the RKD framework allows us to explore a variety of task-specific RKD losses with high- order potentials beyond the two instances. We believe that the RKD framework opens a door to a promising area of effective knowledge transfer with high-order relations.
+<br/>
 
-
+<br/>
 
 ---
 
