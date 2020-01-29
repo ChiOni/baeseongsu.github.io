@@ -26,18 +26,13 @@ use_math: true
 
 ## 1. Introduction
 
-최근 Computer Vision이나 Artificial Intelligence 연구에선 많은 연상량과 메모리를 필요로 하는 모델들이 자주 등장합니다. 이러한 물리적 부담을 줄이기 위한 방법 중 하나로 모델의 지식(knowledge)을 전달(transfer)하는 방법이 있다고 합니다. 이러한 Knowledge Transfer에 있어서, 가장 핵심이 되는 2가지 질문이 있습니다. 바로 "학습된 모델에 들어있는 지식은 무엇으로 구성되어 있는가?"와 "그 지식을 다른 모델로 어떻게 전달할 것인가?"입니다.
+최근 Computer Vision이나 Artificial Intelligence 연구에선 많은 연상량과 메모리를 필요로 하는 모델들이 자주 등장합니다. 이러한 물리적 부담을 줄이기 위한 방법 중 하나로 모델의 지식(knowledge)을 전달(transfer)하는 방법이 있습니다. 이러한 Knowledge Transfer에 있어서, 가장 핵심이 되는 2가지 질문이 있습니다. 바로 "학습된 모델에 들어있는 지식은 무엇으로 구성되어 있는가?"와 "그 지식을 다른 모델로 어떻게 전달할 것인가?"입니다.
 
+예를 들어, Hinton 교수님의 KD 방법에서 지식이란, 입력으로부터 출력까지 학습된 매핑함수를 의미합니다. 또한, Teacher 모델의 Soft Targets을 이용해 지식을 전달하는 방식을 취하고 있습니다. 이처럼 두 가지 질문으로부터 KD 연구는 진행된다고 해도 과언이 아닙니다.
 
+특히, 이 논문은 KD 방법을 언어적 구조주의(linguistic structuralism) 관점에서  
 
-- [3,4,11]과 같은 transfer methods의 assumption
-  - knowledge = learned mapping from inputs to outputs
-  - transfer = teacher's outputs을 student model의 training targets로 학습시킴
-- 최근 연구는 이렇습니다 ~
-  - [1,11,12,27,47] very effective for training a student model
-  - [2, 9, 45] improve a teacher model itself by self-distillation
-- KD를 linguistic structuralism [19] 관점에서 본다면
-  - = semiological system 내에서 structural relations에 초점을 맞춰 본다면
+- - = semiological system 내에서 structural relations에 초점을 맞춰 본다면
   - Saussure’s concept of the relational identity of signs is at the heart of structuralist the- ory; “In a language, as in every other semiological system, what distinguishes a sign is what constitutes it” [30]. In this perspective, the meaning of a sign depends on its relations with other signs within the system; a sign has no absolute meaning independent of the context.
 - 
 
@@ -64,7 +59,7 @@ use_math: true
 
 한 모델의 지식(Knowledge)을 다른 모델로 전달(Transfer)하는 연구는 꽤 오랫동안 해왔습니다. 처음으로, Breiman and Shang이 트리 기반의 model compression을 통해 지식을 전달하는 방법을 제안했다고 합니다. 그 이후로, 신경망 분야의 model compression이 등장했고, Hinton 교수님이 soft targets라는 컨셉을 이용하여 지식 증류(Knowledge Distillation)라는 네이밍을 탄생시켰습니다. 최근에는 HKD(Hinton's KD)를 이은 후속 연구들뿐만 아니라 기존 접근과 다른 방식의 연구가 진행되고 있으며, 지도학습을 넘어 준지도학습/비지도학습 영역에서의 KD, 태스크에 특화된 KD 등에 대한 연구가 진행되고 있습니다.
 
-다양한 KD 연구흐름 속에서 Chen의 연구가 rank loss를 사용해 similarities를 transfer하는 metric learning 기반의 KD라는 점에서 본인들의 연구와 어느정도 유사성이 있다고 말합니다. 그러나, Chen의 연구는 metric learning에만 제한되어 있고, 본 연구는 다양한 테스크에 적용가능한 general framework라고 말합니다. 게다가, metric learning task에서 Chen 것보다 성능이 더 좋았다고 합니다.
+다양한 KD 연구흐름 속에서 Chen의 연구(Darkrank: Accelerating deep metric learning via cross sample similarities transfer)가 rank loss를 사용해 similarities를 transfer하는 metric learning 기반의 KD라는 점에서 이 연구와 유사성이 어느정도 있습니다. 그러나, Chen의 연구는 metric learning에만 제한되어 있고, 본 연구는 다양한 테스크에 적용가능한 general framework라는 차이점이 있습니다. 게다가, metric learning task에서 Chen의 KD방법보다 성능이 더 좋았다고 합니다.
 
 <br/>
 
@@ -198,9 +193,7 @@ RKD에서 distillation target function $f$ 는 이론적으로 어떤 레이어�
 
 ## 4. Experiments
 
-metric learning, classification, few-shot learning 이라는 3가지 태스크에 대해 실험을 진행했습니다. 기존의 RKD를 사용한 손실함수에 따라 RKD-D, RKD-A, RKD-DA 로 구분하고, 다른 손실함수와 결합해서 사용할 경우 항상 각 손실함수의 조정계수(balancing factor)를 고려했다고 합니다.
-
-각 태스크에 대하여 RKD를 FitNet, Attention, HKD (Hinton's KD), Dark-Rank 등과 비교했고, 하이퍼파라미터의 공정한 비교를 위해 grid search로 최적화했다고 합니다. 
+metric learning, classification, few-shot learning 이라는 3가지 태스크에 대해 실험을 진행했습니다. 기존의 RKD를 사용한 손실함수에 따라 RKD-D, RKD-A, RKD-DA 로 구분하고, 다른 손실함수와 결합해서 사용할 경우 항상 각 손실함수의 조정계수(balancing factor)를 고려했다고 합니다. 각 태스크에 대하여 RKD를 FitNet, Attention, HKD (Hinton's KD), Dark-Rank 등과 비교했고, 하이퍼파라미터의 공정한 비교를 위해 grid search로 최적화했습니다.
 
 *Dark-Rank = 데이터 사이의 유사도 순위를 transfer하는, metric learning에 적합한 KD 방법 (metric learning task에서만 사용)
 
@@ -366,7 +359,6 @@ RKD의 비교대상으로 few-shot classification에서 standard benchmarks인 O
 - <img src="/Users/skcc10170/Library/Application Support/typora-user-images/image-20200127180256095.png" alt="image-20200127180256095" style="zoom:50%;" />
 - The Omniglot results are summarized in Ta- ble 5 while the *mini*ImageNet results are reported with 95% confidence intervals in Table 6.
 - 결국 우리 방법이 teacher를 뛰어 넘는 student 성능을 지속적으로 보여줌
-
 
 <br/>
 
