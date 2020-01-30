@@ -30,26 +30,9 @@ use_math: true
 
 예를 들어, Hinton 교수님의 KD 방법에서 지식이란, 입력으로부터 출력까지 학습된 매핑함수를 의미합니다. 또한, Teacher 모델의 Soft Targets을 이용해 지식을 전달하는 방식을 취하고 있습니다. 이처럼 두 가지 질문으로부터 KD 연구는 진행된다고 해도 과언이 아닙니다.
 
-특히, 이 논문은 KD 방법을 언어적 구조주의(linguistic structuralism) 관점에서  
+특히, 이 논문은 언어적 구조주의(linguistic structuralism) 관점에서 KD가 중요하게 생각해야할 점들에 대해 설명하고 있습니다. 언어도 일종의 기호학 체계로 볼 수 있고, 언어에 녹아든 기호의 의미는 큰 체계 속에서 다른 기호들과 어떤 관계를 맺고 있는지가 중요하다는 뜻입니다. (자세한 내용은 논문과 소쉬르의 구조주의 언어학을 참조해주세요.)
 
-- - = semiological system 내에서 structural relations에 초점을 맞춰 본다면
-  - Saussure’s concept of the relational identity of signs is at the heart of structuralist the- ory; “In a language, as in every other semiological system, what distinguishes a sign is what constitutes it” [30]. In this perspective, the meaning of a sign depends on its relations with other signs within the system; a sign has no absolute meaning independent of the context.
-- 
-
-결국 이 논문의 핵심 컨셉은 "지식이라는 것은 (학습된 상황일 때) 개별적인 representation보다 representations의 관계에 의해 더 잘 표현된다"라는 것이다. 
-
-- - individual data exmaple : an image
-  - 다른 data examples와 비슷하거나 대조적인 representation이라는 의미를 얻을 수 있음
-  - 그러한 주요 정보들은 data embedding space안에서 structure로 놓여질 수 있음
-  - 그렇기 때문에, KD에 대해 RKD라는 novel approach를 제안함
-  - 이는, 개별 outputs보다 각 outputs의 structural relations를 transfer하는 방식으로 이루어짐
-  - 좀 더 구체적인 realizations를 위해, 두가지 RKD 로스를 제안
-    - Distance-wise (second-order) distillation loss
-    - Angle-wise (third-order) distillation loss
-  - RKD는 일반적인 KD의 generalization으로 볼 수 있고, 성능을 끌어올리기 위해 다른 방법들과 결합할 수 도 있음
-    - due to its complementarity with conventional KD ???
-  - metric learning, image classification, few-shot learning 에서 이 연구가 student models의 성능을 상당히 향상시킴
-  - 결국, 이 실험들을 통해 knowledge가 relation 속에 살고 있고, RKD는 knowledge를 전파하는데 있어 효과적인 방법임
+그렇다면, 앞서 말한 2가지 질문에 대해 이 논문은 어떻게 답할 수 있을까요? 먼저, "지식이라는 것은 (학습된 상황일 때) 개별적인 representation보다 그들의 관계에 의해 더 잘 표현된다"라는 것입니다. 그에 따라, "개별적인 output보다 output들의 구조적 관계를 전달하는 방식으로 지식을 전달하는 방식으로 접근할 것이다"라고 설명하고 있습니다. 이러한 점에서 기존 KD를 일반화할 수 있는 RKD라는 것이 탄생하게 되었고, 지식전달능력도 상당히 우수하다고 보였습니다. 결국, 지식은 관계 속에 녹아들어 있고, RKD는 이러한 지식을 전파하는데 있어 효과적인 방법이라고 설명합니다.
 
 <br/>
 
@@ -130,7 +113,7 @@ RKD에서 relational potential function은 굉장히 중요함
 
 $\psi_{\text{D}}$ 라는 거리 기반의 포텐셜 함수(distance-wise potential function)를 $\psi_{\text{D}} (t_{i},t_{j}) = \frac{1}{\mu}{\|t_{i}-t_{j}\|}_{2}$ 라고 정의합니다. 즉, 한 쌍을 이루는 두 개의 데이터 샘플이 신경망을 통해 output representation space에 놓여질 때, 그들간의 유클리디안 거리를 계산하는 함수라고 보시면 됩니다. 여기서 $\mu$ 는 거리함수의 normalization factor 입니다. 그렇다면, 이 $\mu$ 는 어떻게 정하는 것이 좋을까요?
 
-논문의 핵심 아이디어가 결국 관계성에 있기 때문에, 다른 쌍들과 비교하여 상대적 거리를 계산하는데 초점을 맞추게 됩니다. 따라서 쌍으로 구성된 미니배치인 $\chi^{2}$ 에서 나온 각각의 페어 데이터의 평균 거리로 계산하게 됩니다. 이를 수식으로 나타내면, $\mu = \frac{1}{|\chi^{2}|}{\sum_{(x_{i}, x_{j})\in\chi^{2}}{\|t_i-t_j\|_2}}$ 라고 표현할 수 있습니다.
+논문의 핵심 아이디어가 결국 관계성에 있기 때문에, 다른 쌍들과 비교하여 상대적 거리를 계산하는데 초점을 맞추게 됩니다. 따라서 쌍으로 구성된 미니배치인 $\chi^{2}$ 에서 나온 각각의 페어 데이터의 평균 거리로 계산하게 됩니다. 이를 수식으로 나타내면, $\mu = \frac{1}{|\chi^{2}|}{\sum_{(x_i, x_j)\in\chi^{2}}{\| t_i-t_j \|_2}}$ 라고 표현할 수 있습니다.
 
 만약 $\mu$ 와 같은 factor가 존재하지 않는다면, Teacher 모델의 dimension 일반적으로 더 크기 때문에 Teacher 모델과 Student 모델 사이의 거리 scale 차이가 발생하게 됩니다. 따라서 논문에서는 $\mu$ 를 사용하여 $\psi_{\text{D}}$ 라는 포텐셜 함수가 결국 distance-wise potentials를 잘 반영할 수 있도록 합니다. 실제로 $\mu$ 라는 factor로 인해 학습이 더 안정적이고 빠르게 수렴하는 것을 관찰했다고 합니다.
 
