@@ -56,9 +56,7 @@ use_math: true
 
 먼저, 논문에서 사용하는 Notation에 대해 알아보겠습니다.
 
-<img src="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20200130005654542.png" alt="image-20200130005654542" style="zoom:50%;" />
-
-주어진 Teacher 모델 $T$ , Student 모델 $S$ 이 일반적으로 Deep Nueral Network라고 형태라고 생각했을 때, 해당 모델의 mapping function을 각각 $f_T$ , $f_S$ 라고 표기합니다. 여기에 있는 $f$ 라는 함수는 신경망의 어떤 층이든 상관없이 그 층의 출력으로 정의될 수 있으나, 보통은 최종 출력을 의미할 때가 많습니다. 서로 다른 data examples의 $N$-튜플 형태를 $\chi^{N}$이라고 표기합니다. 예를 들면, $\chi^{2} 라면 { (x_i, x_j) | i \neq j} 와 같은 distinct pair set, $\chi^{3} 라면 { (x_i, x_j, x_k) | i \neq j \neq \ k } 와 같은 distinct triplet set로 볼 수 있습니다.
+주어진 Teacher 모델 $T$ , Student 모델 $S$ 이 일반적으로 Deep Nueral Network라고 형태라고 생각했을 때, 해당 모델의 mapping function을 각각 $f_T$ , $f_S$ 라고 표기합니다. 여기에 있는 $f$ 라는 함수는 신경망의 어떤 층이든 상관없이 그 층의 출력으로 정의될 수 있으나, 보통은 최종 출력을 의미할 때가 많습니다. 서로 다른 data examples의 $N$-튜플 형태를 $\chi^{N}$이라고 표기합니다. 예를 들면, $\chi^{2}$ 라면 ${ (x_i, x_j) | i \neq j}$ 와 같은 distinct pair set, $\chi^{3}$ 라면 ${ (x_i, x_j, x_k) | i \neq j \neq \ k }$ 와 같은 distinct triplet set로 볼 수 있습니다.
 
 <br/>
 
