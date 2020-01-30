@@ -57,7 +57,7 @@ use_math: true
 먼저, 논문에서 사용하는 Notation에 대해 알아보겠습니다.
 
 주어진 Teacher 모델 $T$ , Student 모델 $S$ 이 일반적으로 Deep Nueral Network라고 형태라고 생각했을 때, 해당 모델의 mapping function을 각각 $f_T$ , $f_S$ 라고 표기합니다. 여기에 있는 $f$ 라는 함수는 신경망의 어떤 층이든 상관없이 그 층의 출력으로 정의될 수 있으나, 보통은 최종 출력을 의미할 때가 많습니다. 서로 다른 data examples의 $N$-튜플 형태를 $\chi^{N}$이라고 표기합니다.
-예를 들면, $\chi^2$ 라면 ${ (x_i, x_j) | {i}\neq{j} }$ 와 같은 distinct pair set, $\chi^3$ 라면 ${ (x_i, x_j, x_k) | i \neq j \neq  k }$ 와 같은 distinct triplet set로 볼 수 있습니다.
+예를 들면, $\chi^2$ 라면 $\{ (x_i, x_j) | {i}\neq{j} \}$ 와 같은 distinct pair set, $\chi^3$ 라면 $\{ (x_i, x_j, x_k) | i \neq j \neq  k \}$ 와 같은 distinct triplet set로 볼 수 있습니다.
 
 <br/>
 
@@ -65,7 +65,7 @@ use_math: true
 
 일반적으로, 우리가 아는 일반적인 KD 방법은 다음과 같은 목적함수를 갖습니다.
 
-$$\mathcal{L}_{\text{IKD}} = \sum_{x_{i}\in\chi}{l( f_T(x_i), f_S(x_i) )}$$
+$$\mathcal{L}_{\text{IKD}} = \sum_{x_i \in \chi}{l( f_T(x_i), f_S(x_i) )}$$
 
 한 마디로, Teacher/Student 모델로 나온 각각의 output mapping을 비슷하게 만들도록 학습했던 것입니다. 논문에서는, 이러한 종류의 KD들이 개별적인 Teacher 모델의 출력값을 Student 모델에게 전해준다는 점에서 IKD(Individual Knowledge Distillation)라고 명명할 수 있다고 말합니다.
 
