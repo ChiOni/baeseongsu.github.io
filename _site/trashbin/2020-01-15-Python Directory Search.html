@@ -1,0 +1,86 @@
+<p>파이썬 디렉토리 검색 방법</p>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">os</span>
+
+<span class="k">def</span> <span class="nf">search</span><span class="p">(</span><span class="n">dirname</span><span class="p">):</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="n">filenames</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">listdir</span><span class="p">(</span><span class="n">dirname</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">filenames</span><span class="p">:</span>
+            <span class="n">full_filename</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">dirname</span><span class="p">,</span> <span class="n">filename</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">full_filename</span><span class="p">):</span>
+                <span class="n">search</span><span class="p">(</span><span class="n">full_filename</span><span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">ext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">full_filename</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+                <span class="k">if</span> <span class="n">ext</span> <span class="o">==</span> <span class="s">'.py'</span><span class="p">:</span> 
+                    <span class="k">print</span><span class="p">(</span><span class="n">full_filename</span><span class="p">)</span>
+    <span class="k">except</span> <span class="n">PermissionError</span><span class="p">:</span>
+        <span class="k">pass</span>
+
+<span class="n">search</span><span class="p">(</span><span class="s">"c:/"</span><span class="p">)</span>
+</code></pre></div></div>
+
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">os</span>
+
+<span class="k">for</span> <span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="nb">dir</span><span class="p">,</span> <span class="n">files</span><span class="p">)</span> <span class="ow">in</span> <span class="n">os</span><span class="o">.</span><span class="n">walk</span><span class="p">(</span><span class="s">"c:/"</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">filename</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+        <span class="n">ext</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">splitext</span><span class="p">(</span><span class="n">filename</span><span class="p">)[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">ext</span> <span class="o">==</span> <span class="s">'.py'</span><span class="p">:</span>
+            <span class="k">print</span><span class="p">(</span><span class="s">"</span><span class="si">%</span><span class="s">s/</span><span class="si">%</span><span class="s">s"</span> <span class="o">%</span> <span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">filename</span><span class="p">))</span>
+</code></pre></div></div>
+
+<p>#확장자 추가</p>
+<div class="language-python highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="kn">import</span> <span class="nn">glob</span>
+<span class="kn">import</span> <span class="nn">os.path</span>
+
+<span class="n">files</span> <span class="o">=</span> <span class="n">glob</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s">'*'</span><span class="p">)</span>
+<span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">files</span><span class="p">:</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">os</span><span class="o">.</span><span class="n">path</span><span class="o">.</span><span class="n">isdir</span><span class="p">(</span><span class="n">x</span><span class="p">):</span>
+        <span class="n">os</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">x</span> <span class="o">+</span> <span class="s">'.txt'</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>#확장자 일괄 변경</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>#replace file ext.
+
+import glob
+import os.path
+
+files = glob.glob('*.mp3')
+
+for x in files:
+
+    if not os.path.isdir(x):
+
+        print x
+
+        x2 = x.replace('.mp3', '.wav')
+
+        print '==&gt; ' + x2
+
+        os.rename(x, x2)
+</code></pre></div></div>
+
+<p>#파일명 앞부분 바꾸기</p>
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>import glob
+
+import os.path
+
+files = glob.glob('*.mp3')
+
+for x in files:
+
+    if not os.path.isdir(x):
+
+        print x
+
+        #print x[0]
+
+        if x.startswith('N') == False:
+
+            print 'not NIV'
+
+            x2 = 'NIV-' + x
+
+            print '==&gt; ' + x2
+
+            os.rename(x, x2)
+</code></pre></div></div>
