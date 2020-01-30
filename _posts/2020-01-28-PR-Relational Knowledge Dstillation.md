@@ -28,7 +28,7 @@ use_math: true
 
 최근 Computer Vision이나 Artificial Intelligence 연구에선 많은 연상량과 메모리를 필요로 하는 모델들이 자주 등장합니다. 이러한 물리적 부담을 줄이기 위한 방법 중 하나로 모델의 지식(knowledge)을 전달(transfer)하는 방법이 있다고 합니다. 이러한 Knowledge Transfer에 있어서, 가장 핵심이 되는 2가지 질문이 있습니다. 바로 "학습된 모델에 들어있는 지식은 무엇으로 구성되어 있는가?"와 "그 지식을 다른 모델로 어떻게 전달할 것인가?"입니다.
 
-
+![](/assets/img/pr/rkd_1.png) 
 
 - [3,4,11]과 같은 transfer methods의 assumption
   - knowledge = learned mapping from inputs to outputs
@@ -384,6 +384,44 @@ We have demonstrated on different tasks and bench- marks that the proposed RKD e
 
 
 ## 99. 나의 생각
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
