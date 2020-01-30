@@ -70,4 +70,5 @@ incremental: false
 url: https://baeseongsu.github.io
 
 
-theme: jekyll-theme-minimal
+# theme: jekyll-theme-minimal
+theme: plainwhite

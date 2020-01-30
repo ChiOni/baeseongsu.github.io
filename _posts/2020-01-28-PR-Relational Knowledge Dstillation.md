@@ -8,9 +8,9 @@ use_math: true
 
 안녕하세요. 배성수입니다.
 
-오늘 리뷰할 논문은 CVPR 2019에 Accepted Paper인 ***Relational Knowledge Distillation*** 입니다.
+오늘 리뷰할 논문은 CVPR 2019에 Accepted Paper인 **Relational Knowledge Distillation** 입니다.
 
-최근 딥러닝 스터디를 하며 Knowledge Distillation(KD) 관련 논문 2편을 읽었습니다. NIPS 2014 Deep Learning Workshop에서 발표한 ***Distilling the Knowledge in a Neural Network*** , ICML 2019에 Accepted Paper인 ***Zero-Shot Knowledge Distillation in Deep Networks*** 입니다.
+최근 딥러닝 스터디를 하며 Knowledge Distillation(KD) 관련 논문 2편을 읽었습니다. NIPS 2014 Deep Learning Workshop에서 발표한 **Distilling the Knowledge in a Neural Network** , ICML 2019에 Accepted Paper인 **Zero-Shot Knowledge Distillation in Deep Networks** 입니다.
 
 극히 주관적인 저의 생각입니다만, 앞선 2편의 KD 논문에 비해 오늘 리뷰할 논문이 좀 더 명확하고 깔끔했습니다. 특히 핵심 아이디어가 뚜렷하고, 뒷받침하는 실험들의 세팅이 탄탄하다는 느낌을 받았습니다. 저자는 POSTECH의 Wonpyo Park, Dongju Kim, Yan Lu, and Minsu Cho 입니다. 재밌게 잘 읽었습니다. 감사합니다.
 
@@ -26,35 +26,17 @@ use_math: true
 
 ## 1. Introduction
 
-최근 Computer Vision이나 Artificial Intelligence 연구에선 많은 연상량과 메모리를 필요로 하는 모델들이 자주 등장합니다. 이러한 물리적 부담을 줄이기 위한 방법 중 하나로 모델의 지식(knowledge)을 전달(transfer)하는 방법이 있다고 합니다. 이러한 Knowledge Transfer에 있어서, 가장 핵심이 되는 2가지 질문이 있습니다. 바로 "학습된 모델에 들어있는 지식은 무엇으로 구성되어 있는가?"와 "그 지식을 다른 모델로 어떻게 전달할 것인가?"입니다.
+최근 Computer Vision이나 Artificial Intelligence 연구에선 많은 연상량과 메모리를 필요로 하는 모델들이 자주 등장합니다. 이러한 물리적 부담을 줄이기 위한 방법 중 하나로 모델의 지식(knowledge)을 전달(transfer)하는 방법이 있습니다. 이러한 Knowledge Transfer에 있어서, 가장 핵심이 되는 2가지 질문이 있습니다. 바로 "학습된 모델에 들어있는 지식은 무엇으로 구성되어 있는가?"와 "그 지식을 다른 모델로 어떻게 전달할 것인가?"입니다.
 
+<<<<<<< HEAD
 ![](/assets/img/pr/rkd_1.png) 
+=======
+예를 들어, Hinton 교수님의 KD 방법에서 지식이란, 입력으로부터 출력까지 학습된 매핑함수를 의미합니다. 또한, Teacher 모델의 Soft Targets을 이용해 지식을 전달하는 방식을 취하고 있습니다. 이처럼 두 가지 질문으로부터 KD 연구는 진행된다고 해도 과언이 아닙니다.
 
-- [3,4,11]과 같은 transfer methods의 assumption
-  - knowledge = learned mapping from inputs to outputs
-  - transfer = teacher's outputs을 student model의 training targets로 학습시킴
-- 최근 연구는 이렇습니다 ~
-  - [1,11,12,27,47] very effective for training a student model
-  - [2, 9, 45] improve a teacher model itself by self-distillation
-- KD를 linguistic structuralism [19] 관점에서 본다면
-  - = semiological system 내에서 structural relations에 초점을 맞춰 본다면
-  - Saussure’s concept of the relational identity of signs is at the heart of structuralist the- ory; “In a language, as in every other semiological system, what distinguishes a sign is what constitutes it” [30]. In this perspective, the meaning of a sign depends on its relations with other signs within the system; a sign has no absolute meaning independent of the context.
-- 
+특히, 이 논문은 언어적 구조주의(linguistic structuralism) 관점에서 KD가 중요하게 생각해야할 점들에 대해 설명하고 있습니다. 언어도 일종의 기호학 체계로 볼 수 있고, 언어에 녹아든 기호의 의미는 큰 체계 속에서 다른 기호들과 어떤 관계를 맺고 있는지가 중요하다는 뜻입니다. (자세한 내용은 논문과 소쉬르의 구조주의 언어학을 참조해주세요.)
+>>>>>>> 0f2eaf5a2523968c30a5cb94de4cc315b87986ce
 
-결국 이 논문의 핵심 컨셉은 "지식이라는 것은 (학습된 상황일 때) 개별적인 representation보다 representations의 관계에 의해 더 잘 표현된다"라는 것이다. 
-
-- - individual data exmaple : an image
-  - 다른 data examples와 비슷하거나 대조적인 representation이라는 의미를 얻을 수 있음
-  - 그러한 주요 정보들은 data embedding space안에서 structure로 놓여질 수 있음
-  - 그렇기 때문에, KD에 대해 RKD라는 novel approach를 제안함
-  - 이는, 개별 outputs보다 각 outputs의 structural relations를 transfer하는 방식으로 이루어짐
-  - 좀 더 구체적인 realizations를 위해, 두가지 RKD 로스를 제안
-    - Distance-wise (second-order) distillation loss
-    - Angle-wise (third-order) distillation loss
-  - RKD는 일반적인 KD의 generalization으로 볼 수 있고, 성능을 끌어올리기 위해 다른 방법들과 결합할 수 도 있음
-    - due to its complementarity with conventional KD ???
-  - metric learning, image classification, few-shot learning 에서 이 연구가 student models의 성능을 상당히 향상시킴
-  - 결국, 이 실험들을 통해 knowledge가 relation 속에 살고 있고, RKD는 knowledge를 전파하는데 있어 효과적인 방법임
+그렇다면, 앞서 말한 2가지 질문에 대해 이 논문은 어떻게 답할 수 있을까요? 먼저, "지식이라는 것은 (학습된 상황일 때) 개별적인 representation보다 그들의 관계에 의해 더 잘 표현된다"라는 것입니다. 그에 따라, "개별적인 output보다 output들의 구조적 관계를 전달하는 방식으로 지식을 전달하는 방식으로 접근할 것이다"라고 설명하고 있습니다. 이러한 점에서 기존 KD를 일반화할 수 있는 RKD라는 것이 탄생하게 되었고, 지식전달능력도 상당히 우수하다고 보였습니다. 결국, 지식은 관계 속에 녹아들어 있고, RKD는 이러한 지식을 전파하는데 있어 효과적인 방법이라고 설명합니다.
 
 <br/>
 
@@ -62,9 +44,9 @@ use_math: true
 
 ## 2. Related Work
 
-한 모델의 지식(Knowledge)을 다른 모델로 전달(Transfer)하는 연구는 꽤 오랫동안 해왔습니다. 처음으로, Breiman and Shang이 트리 기반의 model compression을 통해 지식을 전달하는 방법을 제안했다고 합니다. 그 이후로, 신경망 분야의 model compression이 등장했고, Hinton 교수님이 soft targets라는 컨셉을 이용하여 지식 증류(Knowledge Distillation)라는 네이밍을 탄생시켰습니다. 최근에는 HKD(Hinton's KD)를 이은 후속 연구들뿐만 아니라 기존 접근과 다른 방식의 연구가 진행되고 있으며, 지도학습을 넘어 준지도학습/비지도학습 영역에서의 KD, 태스크에 특화된 KD 등에 대한 연구가 진행되고 있습니다.
+한 모델의 지식(Knowledge)을 다른 모델로 전달(Transfer)하는 연구는 꽤 오랫동안 해왔습니다. 처음으로, Breiman and Shang이 트리 기반의 model compression을 통해 지식을 전달하는 방법을 제안했다고 합니다. 그 이후로, 신경망 분야의 model compression이 등장했고, Hinton 교수님은 soft targets라는 컨셉을 이용하여 지식 증류(Knowledge Distillation)라는 네이밍을 탄생시켰습니다. 최근에는 HKD(Hinton's KD)를 이은 후속 연구들뿐만 아니라 기존 접근과 다른 방식의 연구가 진행되고 있으며, 지도학습을 넘어 준지도학습/비지도학습 영역에서의 KD, 태스크에 특화된 KD 등에 대한 연구가 진행되고 있습니다.
 
-다양한 KD 연구흐름 속에서 Chen의 연구가 rank loss를 사용해 similarities를 transfer하는 metric learning 기반의 KD라는 점에서 본인들의 연구와 어느정도 유사성이 있다고 말합니다. 그러나, Chen의 연구는 metric learning에만 제한되어 있고, 본 연구는 다양한 테스크에 적용가능한 general framework라고 말합니다. 게다가, metric learning task에서 Chen 것보다 성능이 더 좋았다고 합니다.
+다양한 KD 연구흐름 속에서 Chen의 연구(Darkrank: Accelerating deep metric learning via cross sample similarities transfer)가 rank loss를 사용해 similarities를 transfer하는 metric learning 기반의 KD라는 점에서 이 연구와 유사성이 어느정도 있습니다. 그러나, Chen의 연구는 metric learning에만 제한되어 있고, 본 연구는 다양한 테스크에 적용가능한 general framework라는 차이점이 있습니다. 게다가, metric learning task에서 Chen의 KD방법보다 성능이 더 좋았다고 합니다.
 
 <br/>
 
@@ -74,35 +56,37 @@ use_math: true
 
 먼저, 보편적으로 사용해 온 지식증류(Knowledge Distillation)를 살펴본 뒤 논문에서 제안한 관계형 지식증류(RKD, Relational Knowledge Distillation)의 핵심 개념에 대해 살펴볼 것입니다. 또한 RKD에서 사용되는 손실함수로서, 간단하면서도 효과적인 두 가지 증류 손실함수(distillation losses)에 대해 소개하는 순서로 글을 작성했습니다.
 
+<br/>
+
 ### 3.0 Notation
 
-$$T, S$$
+먼저, 논문에서 사용하는 Notation에 대해 알아보겠습니다.
 
-$$f_{T}, f_{S}$$
+(1) 주어진 Teacher model $T$ , Student model $S$ 이 일반적으로 Deep Nueral Network라고 형태라고 생각했을 때, 해당 모델의 mapping function을 각각 $f_T$ 와 $f_S$ 라고 표기합니다. $f$ 라는 함수는 신경망의 어떤 층이든 상관없이 그 층의 출력으로 정의될 수 있으나, 보통은 최종 출력을 의미할 때가 많습니다.
 
-$$\chi^{N}$$ : a set of $$N$$-tuples of distinct data examples
-- ex) $$\chi^{2} = \{ (x_i, x_j) | i \neq j \} $$
-  $$\chi^{3} = \{ (x_i, x_j, x_k) | i \neq j \neq k \} $$
+(2) 서로 다른 data examples의 $N$-튜플 형태를 $\chi^{N}$이라고 표기합니다. 예를 들면, $\chi^{2}$ 라면 $\\{ ( x_i, x_j ) \, \| \,  i \neq j  \\}$ 와 같은 distinct pair set, $\chi^3$ 라면 $\\{ (x_i, x_j, x_k) \, \| \,  i \neq j \neq  k \\}$ 와 같은 distinct triplet set로 볼 수 있습니다.
 
 <br/>
 
 ### 3.1 Conventional KD
 
-보편적으로 사용해 온 KD는 다음과 같은 목적함수를 최소화한다는 점에서 동일했습니다.
+일반적인 KD 방법은 다음과 같은 목적함수를 갖습니다.
 
-$$\mathcal{L}_{\text{IKD}} = \sum_{x_{i}\in\chi}{l( f_T(x_i), f_S(x_i) )}$$
+$$\mathcal{L}_{\text{IKD}} = \sum_{x_i \in \chi}{l( f_T(x_i), f_S(x_i) )}$$
 
-한 마디로, Teacher/Student 모델로 나온 각각의 output mapping을 비슷하게 만들도록 학습했던 것입니다. 논문에서는, 이러한 종류의 KD들이 개별적인 Teacher 모델의 출력값을 Student 모델에게 전해준다는 점에서 IKD(Individual Knowledge Distillation)라고 명명할 수 있다고 말합니다.
+즉, Teacher와 Student 모델로 나온 각각의 output mapping을 비슷하게 만들도록 학습합니다. 논문에서는, 이러한 종류의 KD들이 개별적인 Teacher 모델의 출력값을 Student 모델에게 전해준다는 점에서 **IKD(Individual Knowledge Distillation)**라고 명명할 수 있다고 말합니다.
 
 <br/>
 
 ### 3.2 Relational KD
 
-RKD의 목표는 Teacher 모델의 output representation에서 data examples의 mutual relations를 이용해 구조적 지식(Structural Knowledge)를 전달하는 것으로 볼 수 있습니다. 따라서 기존 KD가 지식을 전달하는 방식과 달리, RKD는 $n\text{-tuple}$ 형태의 data examples에 대한 relational potential $\psi$ 를 계산하고, 그 포텐셜 값을 통해 지식을 전달합니다. 이를 수식으로 표현하면 다음과 같습니다.
+RKD의 목표는 Teacher 모델의 output representation에서 data examples의 mutual relations를 이용해 구조적 지식(Structural Knowledge)를 전달하는 것으로 볼 수 있습니다. 따라서 기존 KD가 지식을 전달하는 방식과 달리, RKD는 $n$-tuple 형태의 data examples에 대한 relational potential $\psi$ 를 계산하고, 그 포텐셜 값을 통해 지식을 전달합니다.
 
 $$\mathcal{L}_{\text{RKD}} = \sum_{(x_{i},.., x_{j})\in\chi^{2}}{l_{\delta}{(\psi{(t_i,..,t_j)}, \psi{(s_i,..,s_j)})}}$$
 
-$$ \text{where } t_i =  f_{T}(x_{i}), s_{i} = f_{S}(x_{i}), \psi : \text{relational potential function}$$ 
+$$ \text{where } t_i =  f_{T}(x_{i}), \; s_{i} = f_{S}(x_{i}), \; \psi : \text{relational potential function}$$ 
+
+
 
 
 
@@ -133,18 +117,23 @@ RKD에서 relational potential function은 굉장히 중요함
 
 #### 3.2.1 Distance-wise distillation loss
 
-$\psi_{\text{D}}$ 라는 거리 기반의 포텐셜 함수(distance-wise potential function)를 $\psi_{\text{D}} (t_{i},t_{j}) = \frac{1}{\mu}{\|t_{i}-t_{j}\|}_{2}$ 라고 정의합니다. 즉, 한 쌍을 이루는 두 개의 데이터 샘플이 신경망을 통해 output representation space에 놓여질 때, 그들간의 유클리디안 거리를 계산하는 함수라고 보시면 됩니다. 여기서 $\mu$ 는 거리함수의 normalization factor 입니다. 그렇다면, 이 $\mu$ 는 어떻게 정하는 것이 좋을까요?
+$\psi_{\text{D}}$ 라는 거리 기반의 포텐셜 함수(distance-wise potential function)를 $\psi_{\text{D}} (t_{i},t_{j}) = \frac{1}{\mu}{\|\|t_{i}-t_{j}\|\|}_2$ 라고 정의합니다. 즉, 한 쌍을 이루는 두 개의 데이터 샘플이 신경망을 통해 output representation space에 놓여질 때, 그들간의 유클리디안 거리를 계산하는 함수라고 보시면 됩니다. 여기서 $\mu$ 는 거리함수의 normalization factor 입니다. 그렇다면, 이 $\mu$ 는 어떻게 정하는 것이 좋을까요?
 
-논문의 핵심 아이디어가 결국 관계성에 있기 때문에, 다른 쌍들과 비교하여 상대적 거리를 계산하는데 초점을 맞추게 됩니다. 따라서 쌍으로 구성된 미니배치인 $\chi^{2}$ 에서 나온 각각의 페어 데이터의 평균 거리로 계산하게 됩니다. 이를 수식으로 나타내면, $\mu = \frac{1}{|\chi^{2}|}{\sum_{(x_{i}, x_{j})\in\chi^{2}}{\|t_i-t_j\|_2}}$ 라고 표현할 수 있습니다.
+<br/>
+
+논문의 핵심 아이디어가 결국 관계성에 있기 때문에, 다른 쌍들과 비교하여 상대적 거리를 구할 수 있게 $\mu$ 를 선택하게 됩니다. 따라서 쌍으로 구성된 미니배치인 $\chi^{2}$ 에서 나온 각각의 페어 데이터의 평균 거리로 계산하게 됩니다.
+
+$$  {\mu = \frac{1}{\| \chi^2 \|} \sum_{(x_i, x_j) \in \chi^{2} } {\| t_i-t_j \|_2}}  $$
 
 만약 $\mu$ 와 같은 factor가 존재하지 않는다면, Teacher 모델의 dimension 일반적으로 더 크기 때문에 Teacher 모델과 Student 모델 사이의 거리 scale 차이가 발생하게 됩니다. 따라서 논문에서는 $\mu$ 를 사용하여 $\psi_{\text{D}}$ 라는 포텐셜 함수가 결국 distance-wise potentials를 잘 반영할 수 있도록 합니다. 실제로 $\mu$ 라는 factor로 인해 학습이 더 안정적이고 빠르게 수렴하는 것을 관찰했다고 합니다.
+
+<br/>
 
 앞에서 살펴본 $\psi_{\text{D}}$ 를 사용해 거리기반 증류 손실함수(Distance-wise distillation loss)는 다음과 같이 정의합니다.
 
 $$\mathcal{L}_{\text{RKD-D}} = \sum_{(x_{i}, x_{j})\in\chi^{2}}{l_{\delta}{(\psi_{\text{D}}{(t_i,t_j)}, \psi_{\text{D}}{(s_i,s_j)})}}$$
 
-(여기서 $l_{\delta}$는 Huber loss를 의미, 외부에선 MAE, 이상치 덜 민감 - 내부에선 세밀하게 MSE)
-
+<center> (여기서 $l_{\delta}$는 Huber loss를 의미, 외부에선 MAE, 이상치 덜 민감 - 내부에선 세밀하게 MSE) </center>
 결국 이 손실함수는 모델의 output representation spaces 내 상대적 거리를 비슷하게 만들도록 해서, 쌍으로 이루어진 데이터가 있을 때 그들의 관계(relationships)들을 Student 모델로 전달(transfer)하는 역할을 하게 됩니다. Student의 output이 직접적으로 Teacher 모델의 output 값을 맞추도록 강요하는 것이 아니라, output이 놓여지는 공간의 거리구조에 초점을 맞추도록 한다는 것이 기존 KD와의 차이점이라고 할 수 있습니다.
 
 <br/>
@@ -152,8 +141,6 @@ $$\mathcal{L}_{\text{RKD-D}} = \sum_{(x_{i}, x_{j})\in\chi^{2}}{l_{\delta}{(\psi
 #### 3.2.2 Angle-wise distillation loss
 
 앞에서 살펴본 $\psi_{\text{D}}$ 가 pair로 작동하는 방식이었다면, 하나의 차원이 더 늘어난 triplet은 어떤 방식으로 작동할까요? 세 쌍이 주어진 경우, output representation space에서 생기는 angle에 대한 metric을 생각해볼 수 있습니다. 따라서, angle-wise potential function $\psi_{\text{A}}$ 는 다음과 같이 정의할 수 있습니다.
-
-<br/>
 
 
 $$ \psi_{\text{A}}{(t_i, t_j, t_k)} = cos \angle{t_{i}t_{j}t_{k}} = \langle \mathbf{e}^{ij}, \mathbf{e}^{kj} \rangle$$ 
@@ -164,11 +151,7 @@ $$\text{where } \mathbf{e}^{ij} = \frac{t_i-t_j}{\|t_i-t_j\|_2}, \mathbf{e}^{kj}
 
 동일한 방식으로 각도 기반의 증류 손실함수(Angle-wise distillation loss)를 생각한다면, 다음과 같이 표기할 수 있습니다.
 
-<br/>
-
 $$\mathcal{L}_{\text{RKD-A}} = \sum_{(x_i,x_j,x_k)\in\chi^{3}}{l_{\delta}{(\psi_{\text{A}}{(t_i,t_j,t_k)}, \psi_{\text{A}}{(s_i,s_j,s_k)})}}$$
-
-<br/>
 
 기존의 distance-wise 보다 angle-wise가 더 higher-order property이기 때문에, 학습 과정에서 관계형 정보를 Student 모델에게 더욱 효과적이고 유연하게 전달할 수 있습니다. 실제 실험에서, angle-wise loss가 종종 더 빠르고 수렴하고, 좋은 성능을 보이는 것을 관찰했다고 합니다.
 
@@ -177,8 +160,6 @@ $$\mathcal{L}_{\text{RKD-A}} = \sum_{(x_i,x_j,x_k)\in\chi^{3}}{l_{\delta}{(\psi_
 #### 3.2.3 Training with RKD
 
 학습과정에서 제안된 RKD 손실함수는 단독으로 사용할 수도 있고,  task에 특화된 손실함수와 함께 사용할 수도 있습니다. 따라서 전체적인 목적함수(objective)를 수식으로 표현하면 아래와 같은 형태가 됩니다.
-
-<br/>
 
 $$\mathcal{L}_{\text{task}} + \lambda_{\text{KD}} \cdot \mathcal{L}_{\text{KD}}$$
 
@@ -198,11 +179,11 @@ RKD에서 distillation target function $f$ 는 이론적으로 어떤 레이어�
 
 ## 4. Experiments
 
-metric learning, classification, few-shot learning 이라는 3가지 태스크에 대해 실험을 진행했습니다. 기존의 RKD를 사용한 손실함수에 따라 RKD-D, RKD-A, RKD-DA 로 구분하고, 다른 손실함수와 결합해서 사용할 경우 항상 각 손실함수의 조정계수(balancing factor)를 고려했다고 합니다.
+metric learning, classification, few-shot learning 이라는 3가지 태스크에 대해 실험을 진행했습니다. 기존의 RKD를 사용한 손실함수에 따라 RKD-D, RKD-A, RKD-DA 로 구분하고, 다른 손실함수와 결합해서 사용할 경우 항상 각 손실함수의 조정계수(balancing factor)를 고려했다고 합니다. 각 태스크에 대하여 RKD를 FitNet, Attention, HKD (Hinton's KD), Dark-Rank 등과 비교했고, 하이퍼파라미터의 공정한 비교를 위해 grid search로 최적화했습니다.
 
-각 태스크에 대하여 RKD를 FitNet, Attention, HKD (Hinton's KD), Dark-Rank 등과 비교했고, 하이퍼파라미터의 공정한 비교를 위해 grid search로 최적화했다고 합니다. 
+<span style="font-size:7pt"> *Dark-Rank = 데이터 사이의 유사도 순위를 transfer하는, metric learning에 적합한 KD 방법 (metric learning task에서만 사용) </span>
 
-*Dark-Rank = 데이터 사이의 유사도 순위를 transfer하는, metric learning에 적합한 KD 방법 (metric learning task에서만 사용)
+
 
 <br/>
 
@@ -366,7 +347,6 @@ RKD의 비교대상으로 few-shot classification에서 standard benchmarks인 O
 - <img src="/Users/skcc10170/Library/Application Support/typora-user-images/image-20200127180256095.png" alt="image-20200127180256095" style="zoom:50%;" />
 - The Omniglot results are summarized in Ta- ble 5 while the *mini*ImageNet results are reported with 95% confidence intervals in Table 6.
 - 결국 우리 방법이 teacher를 뛰어 넘는 student 성능을 지속적으로 보여줌
-
 
 <br/>
 
