@@ -54,9 +54,9 @@ use_math: true
 
 ### 3.0 Notation
 
-$$T, S$$
+<img src="C:\Users\Administrator\AppData\Roaming\Typora\typora-user-images\image-20200130005654542.png" alt="image-20200130005654542" style="zoom:50%;" />
 
-$$f_{T}, f_{S}$$
+주어진 Teacher 모델 $T$ , Student 모델 $S$ 이 일반적으로 Deep Nueral Network라고 형태라고 생각했을 때, 해당 모델의 mapping function을 각각 $f_T$ , $f_S$ 라고
 
 $$\chi^{N}$$ : a set of $$N$$-tuples of distinct data examples
 - ex) $$\chi^{2} = \{ (x_i, x_j) | i \neq j \} $$
