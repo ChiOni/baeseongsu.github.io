@@ -63,7 +63,7 @@ use_math: true
 
 ### 3.1 Conventional KD
 
-보편적으로 사용해 온 KD는 다음과 같은 목적함수를 최소화한다는 점에서 동일했습니다.
+일반적으로, 우리가 아는 일반적인 KD 방법은 다음과 같은 목적함수를 갖습니다.
 
 $$\mathcal{L}_{\text{IKD}} = \sum_{x_{i}\in\chi}{l( f_T(x_i), f_S(x_i) )}$$
 
