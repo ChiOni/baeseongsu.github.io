@@ -1,6 +1,7 @@
 <p>평소에 자주 쓰는 PostgreSQL 문장을 정리해봤습니다.</p>
 
 <h3 id="ddl문-출력하고-시">ddl문 출력하고 시</h3>
+
 <div class="language-sql highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="k">SELECT</span> <span class="o">*</span>
 <span class="k">FROM</span> <span class="err">스키마</span><span class="p">.</span><span class="n">v_generate_tbl_ddl</span>
 <span class="k">WHERE</span> <span class="n">tablename</span> <span class="o">=</span> <span class="k">LOWER</span><span class="p">(</span><span class="s1">'테이블명'</span><span class="p">)</span>

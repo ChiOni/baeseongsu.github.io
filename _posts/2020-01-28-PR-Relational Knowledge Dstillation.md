@@ -2,17 +2,34 @@
 layout: post
 title:  "Paper Review : Relational Knowledge Distillation"
 date:   2020-01-28 22:22
-categories: [Deep Learning, Knowledge Distillation]
+lastmod : 2020-01-31 14:44
+sitemap :
+  changefreq : daily
+  priority : 1.0
+categories: [Paper Review, Deep Learning, Knowledge Transfer]
 use_math: true
 ---
 
+<br/>
+
+<br/>
+
+<br/>
+
 안녕하세요. 배성수입니다.
 
-오늘 리뷰할 논문은 CVPR 2019에 Accepted Paper인 **Relational Knowledge Distillation** 입니다.
+오늘 리뷰할 논문은 CVPR 2019에 Accepted Paper인 **"Relational Knowledge Distillation"** 입니다.
 
-최근 딥러닝 스터디를 하며 Knowledge Distillation(KD) 관련 논문 2편을 읽었습니다. NIPS 2014 Deep Learning Workshop에서 발표한 **Distilling the Knowledge in a Neural Network** , ICML 2019에 Accepted Paper인 **Zero-Shot Knowledge Distillation in Deep Networks** 입니다.
+최근 딥러닝 스터디를 하며 Knowledge Distillation(KD) 관련 논문 2편을 읽었습니다.
 
-극히 주관적인 저의 생각입니다만, 앞선 2편의 KD 논문에 비해 오늘 리뷰할 논문이 좀 더 명확하고 깔끔했습니다. 특히 핵심 아이디어가 뚜렷하고, 뒷받침하는 실험들의 세팅이 탄탄하다는 느낌을 받았습니다. 저자는 POSTECH의 Wonpyo Park, Dongju Kim, Yan Lu, and Minsu Cho 입니다. 재밌게 잘 읽었습니다. 감사합니다.
+1. Distilling the Knowledge in a Neural Network, NIPS 2014 Deep Learning Workshop
+2. Zero-Shot Knowledge Distillation in Deep Networks, ICML 2019
+
+기존 KD에 대한 여러 방법을 잘 알지 못하지만, 위에 나열된 2편의 KD논문에 비해 오늘 리뷰할 논문이 좀 더 명확하고 깔끔하다고 느껴졌습니다. 특히 핵심 아이디어가 뚜렷하고, 뒷받침하는 실험들의 세팅이 탄탄하다는 느낌을 받았습니다. 저자는 Wonpyo Park, Dongju Kim, Yan Lu, and Minsu Cho 입니다. 재밌게 잘 읽었습니다. 감사합니다.
+
+<br/>
+
+<br/>
 
 <br/>
 
@@ -21,6 +38,10 @@ use_math: true
 <br/>
 
 # <center> Relational Knowledge Distillation, CVPR 2019 </center>
+
+<br/>
+
+<br/>
 
 <br/>
 
@@ -34,7 +55,14 @@ use_math: true
 
 그렇다면, 앞서 말한 2가지 질문에 대해 이 논문은 어떻게 답할 수 있을까요? 먼저, "지식이라는 것은 (학습된 상황일 때) 개별적인 representation보다 그들의 관계에 의해 더 잘 표현된다"라는 것입니다. 그에 따라, "개별적인 output보다 output들의 구조적 관계를 전달하는 방식으로 지식을 전달하는 방식으로 접근할 것이다"라고 설명하고 있습니다. 이러한 점에서 기존 KD를 일반화할 수 있는 RKD라는 것이 탄생하게 되었고, 지식전달능력도 상당히 우수하다고 보였습니다. 결국, 지식은 관계 속에 녹아들어 있고, RKD는 이러한 지식을 전파하는데 있어 효과적인 방법이라고 설명합니다.
 
-<center><img src="/assets/img/pr/rkd_1.png" width="600" height="600"></center>
+<center>
+  <figure>
+    <img data-action="zoom" src='{{ "/assets/img/pr/rkd_1.png" | relative_url }}' alt='absolute' width="480" height="480">
+    <figcaption>기존의 KD와 RKD의 차이를 명확히 볼 수 있습니다. </figcaption>
+  </figure>
+</center>
+
+<br/>
 
 <br/>
 
@@ -42,9 +70,11 @@ use_math: true
 
 ## 2. Related Work
 
-한 모델의 지식(Knowledge)을 다른 모델로 전달(Transfer)하는 연구는 꽤 오랫동안 해왔습니다. 처음으로, Breiman and Shang이 트리 기반의 model compression을 통해 지식을 전달하는 방법을 제안했다고 합니다. 그 이후로, 신경망 분야의 model compression이 등장했고, Hinton 교수님은 soft targets라는 컨셉을 이용하여 지식 증류(Knowledge Distillation)라는 네이밍을 탄생시켰습니다. 최근에는 HKD(Hinton's KD)를 이은 후속 연구들뿐만 아니라 기존 접근과 다른 방식의 연구가 진행되고 있으며, 지도학습을 넘어 준지도학습/비지도학습 영역에서의 KD, 태스크에 특화된 KD 등에 대한 연구가 진행되고 있습니다.
+한 모델의 지식(Knowledge)을 다른 모델로 전달(Transfer)하는 연구는 꽤 오랫동안 지속됐다고 합니다. 처음으로, Breiman and Shang이 트리 기반의 model compression을 통해 지식을 전달하는 방법을 제안합니다. 그 이후로, 신경망 분야의 model compression이 등장했고, Hinton 교수님은 soft targets라는 컨셉을 이용하여 지식 증류(Knowledge Distillation, a.k.a KD)라는 네이밍을 탄생시킵니다. 최근에는 HKD(Hinton's KD)를 이은 후속 연구들뿐만 아니라 기존 접근과 다른 방식의 연구가 진행되고 있으며, 지도학습을 넘어 준지도학습/비지도학습 영역에서의 KD, 태스크에 특화된 KD 등에 대한 연구가 진행되고 있습니다.
 
-다양한 KD 연구흐름 속에서 Chen의 연구(Darkrank: Accelerating deep metric learning via cross sample similarities transfer)가 rank loss를 사용해 similarities를 transfer하는 metric learning 기반의 KD라는 점에서 이 연구와 유사성이 어느정도 있습니다. 그러나, Chen의 연구는 metric learning에만 제한되어 있고, 본 연구는 다양한 테스크에 적용가능한 general framework라는 차이점이 있습니다. 게다가, metric learning task에서 Chen의 KD방법보다 성능이 더 좋았다고 합니다.
+다양한 KD 연구흐름 속에서 Chen의 연구(Darkrank: Accelerating deep metric learning via cross sample similarities transfer)가 rank loss를 사용해 similarities를 transfer하는 metric learning 기반의 KD라는 점에서 이 연구와 유사성이 어느정도 있습니다. 그러나, Chen의 연구는 metric learning에만 제한되어 있고, 본 연구는 다양한 테스크에 적용가능한 general framework라는 차이점이 있습니다. 게다가, metric learning task에서 Chen의 KD방법보다 성능이 더 좋습니다.
+
+<br/>
 
 <br/>
 
@@ -52,7 +82,7 @@ use_math: true
 
 ## 3. Our Approach
 
-먼저, 보편적으로 사용해 온 지식증류(Knowledge Distillation)를 살펴본 뒤 논문에서 제안한 관계형 지식증류(RKD, Relational Knowledge Distillation)의 핵심 개념에 대해 살펴볼 것입니다. 또한 RKD에서 사용되는 손실함수로서, 간단하면서도 효과적인 두 가지 증류 손실함수(distillation losses)에 대해 소개하는 순서로 글을 작성했습니다.
+먼저 보편적으로 사용해 온 지식증류(Knowledge Distillation)를 살펴본 뒤, 논문에서 제안한 관계형 지식증류(RKD, Relational Knowledge Distillation)의 핵심 개념에 대해 살펴보겠습니다. 또한 RKD에서 사용되는 손실함수로서, 간단하면서도 효과적인 두 가지 증류 손실함수(distillation losses)에 대해 자세히 알아보겠습니다.
 
 <br/>
 
@@ -60,7 +90,7 @@ use_math: true
 
 먼저, 논문에서 사용하는 Notation에 대해 알아보겠습니다.
 
-(1) 주어진 Teacher model $T$ , Student model $S$ 이 일반적으로 Deep Nueral Network라고 형태라고 생각했을 때, 해당 모델의 mapping function을 각각 $f_T$ 와 $f_S$ 라고 표기합니다. $f$ 라는 함수는 신경망의 어떤 층이든 상관없이 그 층의 출력으로 정의될 수 있으나, 보통은 최종 출력을 의미할 때가 많습니다.
+(1) 주어진 Teacher model $T$ , Student model $S$ 이 일반적으로 Deep Nueral Network라고 형태라고 생각했을 때, 해당 모델의 mapping function을 각각 $f_T$ 와 $f_S$ 라고 표기합니다. $f$ 라는 함수는 신경망의 어떤 층이든 상관없이 그 층의 출력으로 정의될 수 있으나, 일반적으로 최종 출력을 의미하는 경우가 많습니다.
 
 (2) 서로 다른 data examples의 $N$-튜플 형태를 $\chi^{N}$이라고 표기합니다. 예를 들면, $\chi^{2}$ 라면 $\\{ ( x_i, x_j ) \, \| \,  i \neq j  \\}$ 와 같은 distinct pair set, $\chi^3$ 라면 $\\{ (x_i, x_j, x_k) \, \| \,  i \neq j \neq  k \\}$ 와 같은 distinct triplet set로 볼 수 있습니다.
 
@@ -72,7 +102,7 @@ use_math: true
 
 $$\mathcal{L}_{\text{IKD}} = \sum_{x_i \in \chi}{l( f_T(x_i), f_S(x_i) )}$$
 
-즉, Teacher와 Student 모델로 나온 각각의 output mapping을 비슷하게 만들도록 학습합니다. 논문에서는, 이러한 종류의 KD들이 개별적인 Teacher 모델의 출력값을 Student 모델에게 전해준다는 점에서 **IKD(Individual Knowledge Distillation)**라고 명명할 수 있다고 말합니다.
+즉, Teacher와 Student 모델로 나온 각각의 output mapping을 비슷하게 만들도록 학습합니다. 논문에서는, 이러한 종류의 KD들이 개별적인 Teacher 모델의 출력값을 Student 모델에게 전해준다는 점에서 IKD(Individual Knowledge Distillation)라고 명명할 수 있다고 말합니다.
 
 <br/>
 
@@ -175,11 +205,13 @@ RKD에서 distillation target function $f$ 는 이론적으로 어떤 레이어�
 
 <br/>
 
+<br/>
+
 ## 4. Experiments
 
-metric learning, classification, few-shot learning 이라는 3가지 태스크에 대해 실험을 진행했습니다. 기존의 RKD를 사용한 손실함수에 따라 RKD-D, RKD-A, RKD-DA 로 구분하고, 다른 손실함수와 결합해서 사용할 경우 항상 각 손실함수의 조정계수(balancing factor)를 고려했다고 합니다. 각 태스크에 대하여 RKD를 FitNet, Attention, HKD (Hinton's KD), Dark-Rank 등과 비교했고, 하이퍼파라미터의 공정한 비교를 위해 grid search로 최적화했습니다.
+metric learning, classification, few-shot learning 이라는 3가지 태스크에 대해 실험을 진행했습니다. 기존의 RKD를 사용한 손실함수에 따라 RKD-D, RKD-A, RKD-DA 로 구분하고, 다른 손실함수와 결합해서 사용할 경우 항상 각 손실함수의 조정계수(balancing factor)를 고려했다고 합니다. 각 태스크에 대하여 RKD를 FitNet, Attention, HKD(Hinton's KD), *Dark-Rank 등과 비교했고, 하이퍼파라미터의 공정한 비교를 위해 grid search로 최적화했습니다.
 
-<span style="font-size:7pt"> *Dark-Rank = 데이터 사이의 유사도 순위를 transfer하는, metric learning에 적합한 KD 방법 (metric learning task에서만 사용) </span>
+<span style="font-size:10pt"> *Dark-Rank = 데이터 사이의 유사도 순위를 transfer하는, metric learning에 적합한 KD 방법 (metric learning task에서만 사용) </span>
 
 
 
