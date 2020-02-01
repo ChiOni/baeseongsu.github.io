@@ -9,6 +9,7 @@ use_math: true
 평소에 자주 쓰는 PostgreSQL 문장을 정리해봤습니다.
 
 ### ddl문 출력하고 시
+
 ```sql
 SELECT *
 FROM 스키마.v_generate_tbl_ddl

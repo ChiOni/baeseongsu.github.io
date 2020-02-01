@@ -30,7 +30,10 @@ layout: default
     </div>
     <div class="post">
       {%- if site.show_excerpts -%}
-      {{ post.excerpt }}
+        <!-- {{ post.excerpt }} #기존에 excerpt-->
+	    {{ post.content | strip_html | truncatewords: 50 }}
+		<br>
+	    <a class="excerpt-post-link" href="{{ post.url | relative_url }}">Continue reading →</a>
       {%- endif -%}
     </div>
   </li>
