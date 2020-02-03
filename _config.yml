@@ -15,7 +15,7 @@ plainwhite:
   sitemap: true # set to true to generate sitemap.xml content
   
   # disqus
-  disqus_url: https://seongsubae.github.io
+  disqus_url: https://baeseongsu.github.io
   disqus_shortname: https-seongsubae-github-io #disqus_id
 
   # generate social links in footer
